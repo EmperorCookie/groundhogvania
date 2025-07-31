@@ -182,7 +182,7 @@ func play_animation(animation_name: String, loop: bool = true, restart: bool = f
 		animation_player.play(animation)
 		last_animation = animation
 
-func update_animation(turning: bool, delta: float):
+func update_animation(turning: bool, _delta: float):
 	var _velocity: Vector2 = velocity_meter()
 	horizontal_flipper.scale.x = facing
 	if is_on_floor():

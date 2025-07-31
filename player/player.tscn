@@ -622,8 +622,10 @@ animation_player = NodePath("HorizontalFlipper/Sprite2D/AnimationPlayer")
 [node name="HorizontalFlipper" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="HorizontalFlipper"]
-texture = ExtResource("4_qjkh3")
-offset = Vector2(1, -32)
+texture = ExtResource("1_oul6g")
+offset = Vector2(4, -24)
+hframes = 4
+frame = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="HorizontalFlipper/Sprite2D"]
 libraries = {
