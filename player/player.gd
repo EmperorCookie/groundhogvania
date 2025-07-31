@@ -74,7 +74,6 @@ func input_state(action: String) -> int:
 
 func _physics_process(delta: float):
 	dashing -= delta
-	print_debug(dashing)
 	var turning = handle_player_input(delta)
 	move_and_slide()
 	update_animation(turning, delta)
