@@ -34,6 +34,7 @@ const GRID: float = GRID_PX / METER_PX
 # State
 var facing: float = 1
 var was_on_floor: bool = false
+var last_animation: String = "idle"
 
 # Animations
 var sprite: String = "cat"
@@ -146,12 +147,18 @@ func handle_input(
 	velocity = _velocity * METER_PX
 	return turning
 
-func play_animation(animation_name: String, restart: bool = false):
+func play_animation(animation_name: String, loop: bool = true, restart: bool = false):
 	var animation: String = get_animation(sprite, animations[animation_name])
 	#print_debug(animation_player.current_animation + ", " + animation)
-	if animation_player.current_animation != animation or restart:
-		print_debug("Animation changed to " + animation)
+	if last_animation != animation or restart:
+		animation_player.get_animation(animation).loop_mode = Animation.LOOP_LINEAR if loop else Animation.LOOP_NONE
+		#print_debug(
+			#"Animation changed from " + animation_player.current_animation
+			#+ " to " + animation
+			#+ ", loop_mode: " + str(animation_player.get_animation(animation).loop_mode)
+		#)
 		animation_player.play(animation)
+		last_animation = animation
 
 func update_animation(turning: bool, _delta: float):
 	var _velocity: Vector2 = velocity_meter()
