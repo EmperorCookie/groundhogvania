@@ -122,7 +122,7 @@ func handle_input(
 				if abs(_velocity.x) < speed:
 					_velocity.x = sign(_velocity.x) * speed
 		# Dash before jump so it works even if pressed on the same frame
-		if dash_action == 2 and can_dash:
+		if dash_action == 2 and can_dash and dashing <= 0:
 			_velocity.x = sign(facing if direction.x == 0 else direction.x) * dash_speed
 			dashing = dash_duration
 		# Jump
