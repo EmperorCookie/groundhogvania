@@ -27,6 +27,7 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 @export var jump_height: float = 3.2 * GRID
 @export var jump_height_double: float = 2.2 * GRID
 @export var jump_height_abort: float = 0.5 * GRID
+@export var koyote_time: float = 0.1
 @export var speed: float = 6 * GRID
 @export var acceleration: float = 4
 @export var acceleration_air: float = 2
@@ -38,6 +39,7 @@ var facing: float = 1
 var dashing: float = 0
 var last_animation: String = "idle"
 var jumps_done: int = 1
+var koyote_timer: float = 0
 
 # Animations
 var sprite: String = "cat"
@@ -131,9 +133,12 @@ func handle_input(
 			jumps_done = 1
 		else:
 			jumps_done = 0
+		koyote_timer = 0
 	# Air controls
 	else:
-		jumps_done = max(jumps_done, 1)
+		koyote_timer += delta
+		if koyote_timer >= koyote_time:
+			jumps_done = max(jumps_done, 1)
 		# Gravity
 		var g = default_gravity * weight * delta
 		_velocity.y += g
