@@ -18,7 +18,7 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 @onready var default_gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 # Capabilities
-@export_range(0, INF) var jump_count: int = 2
+@export var jump_count: int = 2
 @export var double_jump_and_turn: bool = true
 @export var can_dash: bool = true
 
