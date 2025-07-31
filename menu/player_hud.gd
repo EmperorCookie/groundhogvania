@@ -12,6 +12,9 @@ var max_hp: int = 3  # Maximum HP segments
 var hp_segments: Array[ColorRect] = []
 var hp_shadows: Array[ColorRect] = []  # Shadow/silhouette segments
 
+# Animation variables
+# Note: Tweens are created with create_tween() in Godot 4, not stored as variables
+
 # Developer buttons
 @onready var dev_buttons: VBoxContainer = $Control/DevButtons
 @onready var take_damage_btn: Button = $Control/DevButtons/TakeDamageBtn
@@ -112,21 +115,60 @@ func update_hp_display():
 
 func take_damage(damage: int = 1):
 	# Function to handle taking damage
+	var old_hp = hp
 	hp = max(0, hp - damage)
+	
+	# Animate the lost HP segments
+	for i in range(old_hp - 1, hp - 1, -1):  # From last HP to current HP
+		if i < hp_segments.size():
+			animate_damage(hp_segments[i])
+	
+	# Update display after a short delay to let animation start
+	await get_tree().create_timer(0.1).timeout
 	update_hp_display()
 	
 	if hp <= 0:
 		print("Player died!")
 
+func animate_damage(segment: ColorRect):
+	# Simple flash animation for damage
+	var original_color = segment.color
+	
+	# Create a new tween for this animation
+	var damage_tween = create_tween()
+	
+	# Flash white briefly, then back to red
+	damage_tween.tween_property(segment, "color", Color.WHITE, 0.1)
+	damage_tween.tween_property(segment, "color", original_color, 0.1)
+
 func heal(amount: int = 1):
 	# Function to handle healing
+	var old_hp = hp
 	hp = min(max_hp, hp + amount)  # Cap at max HP
+	
+	# Animate the restored HP segments
+	for i in range(old_hp, hp):
+		if i < hp_segments.size():
+			animate_heal(hp_segments[i])
+	
 	update_hp_display()
+
+func animate_heal(segment: ColorRect):
+	# Simple flash animation for healing
+	var original_color = segment.color
+	
+	# Create a new tween for this animation
+	var heal_tween = create_tween()
+	
+	# Flash green briefly, then back to red
+	heal_tween.tween_property(segment, "color", Color.GREEN, 0.15)
+	heal_tween.tween_property(segment, "color", original_color, 0.15)
 
 func add_hp_segment():
 	# Add a new HP segment (increase max HP)
+	var lost_hp = max_hp - hp  # Calculate how much HP was lost
 	max_hp += 1
-	hp = max_hp  # Full heal when adding segment
+	hp = max_hp - lost_hp  # Maintain the same amount of lost HP
 	
 	# Create a container for the new HP segment pair
 	var segment_container = Control.new()
@@ -150,7 +192,21 @@ func add_hp_segment():
 	segment_container.add_child(new_segment)
 	hp_segments.append(new_segment)
 	
+	# Animate the new segment with a flash
+	animate_new_segment_flash(new_segment)
+	
 	update_hp_display()
+
+func animate_new_segment_flash(segment: ColorRect):
+	# Simple flash animation for new segment
+	var original_color = segment.color
+	
+	# Create a new tween for this animation
+	var new_segment_tween = create_tween()
+	
+	# Flash gold/yellow briefly, then back to red
+	new_segment_tween.tween_property(segment, "color", Color.YELLOW, 0.2)
+	new_segment_tween.tween_property(segment, "color", original_color, 0.2)
 
 func remove_hp_segment():
 	# Remove an HP segment (decrease max HP)

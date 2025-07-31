@@ -1,0 +1,77 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7y5vlnbew3n7"]
+
+[ext_resource type="Script" uid="uid://2ak23c2yneox" path="res://menu/player_hud.gd" id="1_jsqgb"]
+
+[node name="PlayerHud" type="Node2D"]
+script = ExtResource("1_jsqgb")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 640.0
+offset_bottom = 360.0
+
+[node name="HPContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 310.0
+offset_bottom = 30.0
+
+[node name="HP1" type="ColorRect" parent="Control/HPContainer"]
+custom_minimum_size = Vector2(75, 20)
+layout_mode = 2
+color = Color(1, 0, 0, 1)
+
+[node name="HP2" type="ColorRect" parent="Control/HPContainer"]
+custom_minimum_size = Vector2(75, 20)
+layout_mode = 2
+color = Color(1, 0, 0, 1)
+
+[node name="HP3" type="ColorRect" parent="Control/HPContainer"]
+custom_minimum_size = Vector2(75, 20)
+layout_mode = 2
+color = Color(1, 0, 0, 1)
+
+[node name="BoxContainer" type="BoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 40.0
+offset_right = 20.0
+offset_bottom = 80.0
+grow_horizontal = 2
+
+[node name="restart_timer" type="Label" parent="Control/BoxContainer"]
+layout_mode = 2
+text = "1:00"
+
+[node name="DevButtons" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -120.0
+offset_top = -120.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="TakeDamageBtn" type="Button" parent="Control/DevButtons"]
+layout_mode = 2
+text = "Take Damage"
+
+[node name="HealBtn" type="Button" parent="Control/DevButtons"]
+layout_mode = 2
+text = "Heal"
+
+[node name="AddSegmentBtn" type="Button" parent="Control/DevButtons"]
+layout_mode = 2
+text = "Add Segment"
+
+[node name="RemoveSegmentBtn" type="Button" parent="Control/DevButtons"]
+layout_mode = 2
+text = "Remove Segment"
