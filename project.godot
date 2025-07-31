@@ -59,4 +59,4 @@ player_dash={
 
 [physics]
 
-2d/default_gravity=15.0
+2d/default_gravity=9.81
