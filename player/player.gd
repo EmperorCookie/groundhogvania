@@ -126,6 +126,7 @@ func handle_input(
 			jumps_done = 0
 	# Air controls
 	else:
+		jumps_done = max(jumps_done, 1)
 		# Gravity
 		var g = default_gravity * weight * delta
 		_velocity.y += g
