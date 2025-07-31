@@ -1,6 +1,9 @@
-[gd_scene format=3 uid="uid://dnhvqej5wc4oj"]
+[gd_scene load_steps=2 format=3 uid="uid://dnhvqej5wc4oj"]
+
+[ext_resource type="Script" uid="uid://ns4pbhjxw6a4" path="res://menu/main_menu.gd" id="1_chmv6"]
 
 [node name="MainMenu" type="Node2D"]
+script = ExtResource("1_chmv6")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -35,3 +38,6 @@ text = "Start"
 layout_mode = 2
 text = "Quit
 "
+
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/start_btn" to="." method="_on_start_btn_pressed"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/quit_btn" to="." method="_on_quit_btn_pressed"]
