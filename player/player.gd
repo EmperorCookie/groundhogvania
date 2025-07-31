@@ -144,6 +144,8 @@ func handle_input(
 			_velocity.x += direction.x * _acceleration_air
 			if abs(_velocity.x) > speed:
 				_velocity.x = sign(_velocity.x) * speed
+			if sign(_velocity.x) == sign(direction.x):
+				facing = 1 if direction.x > 0 else -1
 	velocity = _velocity * METER_PX
 	return turning
 
