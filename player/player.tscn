@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://5yuhe55teig6"]
+[gd_scene load_steps=16 format=3 uid="uid://5yuhe55teig6"]
 
 [ext_resource type="Texture2D" uid="uid://db7l8sq77wghu" path="res://assets/cat/Idle.png" id="1_oul6g"]
 [ext_resource type="Texture2D" uid="uid://b1v05yy2qjbur" path="res://assets/cat/Walk.png" id="2_rkbax"]
@@ -324,12 +324,120 @@ tracks/3/keys = {
 "values": [2]
 }
 
+[sub_resource type="Animation" id="Animation_qjkh3"]
+resource_name = "cat_jump_start"
+length = 0.30001
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_rkbax")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(3, -24)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="Animation" id="Animation_hg6s5"]
+resource_name = "cat_jump_end"
+length = 0.20001
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_rkbax")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [6]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(3, -24)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [3, 4]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yw30f"]
 _data = {
 &"RESET": SubResource("Animation_g1dw6"),
 &"cat_dash_end": SubResource("Animation_boad6"),
 &"cat_dash_start": SubResource("Animation_g6k8r"),
 &"cat_idle": SubResource("Animation_rkbax"),
+&"cat_jump_end": SubResource("Animation_hg6s5"),
+&"cat_jump_start": SubResource("Animation_qjkh3"),
 &"cat_turn": SubResource("Animation_rgyib"),
 &"cat_walk": SubResource("Animation_yw30f")
 }
