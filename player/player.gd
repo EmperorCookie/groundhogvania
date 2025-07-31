@@ -7,12 +7,12 @@ extends CharacterBody2D
 @export var animation_player: AnimationPlayer = null
 
 # Scale
-const TERMINAL_VELOCITY: float = 55
 const CHARACTER_HEIGHT_PX: int = 12
 const CHARACTER_HEIGHT: float = 0.33
 const GRID_PX: int = 16
 const METER_PX: float = floor(CHARACTER_HEIGHT_PX / CHARACTER_HEIGHT)
 const GRID: float = GRID_PX / METER_PX
+const TERMINAL_VELOCITY: float = 10 * GRID
 
 # External values
 @onready var default_gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -22,6 +22,7 @@ const GRID: float = GRID_PX / METER_PX
 @export var can_dash: bool = false
 
 # Stats
+@export var weight: float = 1.5
 @export var jump_height: float = 3.2 * GRID
 @export var jump_height_double: float = 3.2 * GRID
 @export var jump_height_abort: float = 0.5 * GRID
@@ -34,6 +35,7 @@ const GRID: float = GRID_PX / METER_PX
 # State
 var facing: float = 1
 var was_on_floor: bool = false
+var last_animation: String = "idle"
 
 # Animations
 var sprite: String = "cat"
@@ -118,18 +120,18 @@ func handle_input(
 			pass # TODO
 		# Jump
 		if jump_action == 2:
-			_velocity.y = -jump_velocity(default_gravity, jump_height)
+			_velocity.y = -jump_velocity(default_gravity * weight, jump_height)
 	# Air controls
 	else:
 		# Gravity
-		var g = default_gravity * delta
+		var g = default_gravity * weight * delta
 		_velocity.y += g
 		# Terminal velocity
 		if _velocity.y > TERMINAL_VELOCITY:
 			velocity.y = max(velocity.y - g * 2, TERMINAL_VELOCITY)
 		# Abort jump
 		if jump_action == -1:
-			var jump_velocity_abort = jump_velocity(default_gravity, jump_height_abort)
+			var jump_velocity_abort = jump_velocity(default_gravity * weight, jump_height_abort)
 			if _velocity.y < -jump_velocity_abort:
 				_velocity.y = -jump_velocity_abort
 		# Air control
@@ -140,18 +142,22 @@ func handle_input(
 			else:
 				_velocity.x = 0
 		else:
-			_velocity.x += direction.x * _acceleration_air
-			if abs(_velocity.x) > speed:
-				_velocity.x = sign(_velocity.x) * speed
+			var same_direction: bool = (sign(_velocity.x) == sign(direction.x))
+			if abs(_velocity.x) < speed or not same_direction:
+				_velocity.x += direction.x * _acceleration_air
+				if same_direction and abs(_velocity.x) > speed:
+					_velocity.x = sign(_velocity.x) * speed
+			if same_direction:
+				facing = 1 if direction.x > 0 else -1
 	velocity = _velocity * METER_PX
 	return turning
 
-func play_animation(animation_name: String, restart: bool = false):
+func play_animation(animation_name: String, loop: bool = true, restart: bool = false):
 	var animation: String = get_animation(sprite, animations[animation_name])
-	#print_debug(animation_player.current_animation + ", " + animation)
-	if animation_player.current_animation != animation or restart:
-		print_debug("Animation changed to " + animation)
+	if last_animation != animation or restart:
+		animation_player.get_animation(animation).loop_mode = Animation.LOOP_LINEAR if loop else Animation.LOOP_NONE
 		animation_player.play(animation)
+		last_animation = animation
 
 func update_animation(turning: bool, _delta: float):
 	var _velocity: Vector2 = velocity_meter()
