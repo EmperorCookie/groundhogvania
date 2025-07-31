@@ -337,6 +337,7 @@ tracks/4/keys = {
 [sub_resource type="Animation" id="Animation_yllr7"]
 resource_name = "jump_end"
 length = 0.20001
+loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -402,6 +403,7 @@ tracks/4/keys = {
 [sub_resource type="Animation" id="Animation_kb6p2"]
 resource_name = "jump_start"
 length = 0.30001
+loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -612,15 +614,20 @@ _data = {
 radius = 6.0
 height = 16.0
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("horizontal_flipper", "animation_player")]
 script = ExtResource("1_boad6")
+horizontal_flipper = NodePath("HorizontalFlipper")
+animation_player = NodePath("HorizontalFlipper/Sprite2D/AnimationPlayer")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="HorizontalFlipper" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="HorizontalFlipper"]
 texture = ExtResource("2_rkbax")
 offset = Vector2(3, -24)
 hframes = 6
+frame = 2
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="HorizontalFlipper/Sprite2D"]
 libraries = {
 &"cat": SubResource("AnimationLibrary_tqiix")
 }

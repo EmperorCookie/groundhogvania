@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=4 uid="uid://cxn86u68ckjjp"]
+[gd_scene load_steps=3 format=4 uid="uid://cxn86u68ckjjp"]
 
 [ext_resource type="TileSet" uid="uid://duvwwdne6hncq" path="res://assets/blocking_tileset.tres" id="1_esipj"]
+[ext_resource type="PackedScene" uid="uid://5yuhe55teig6" path="res://player/player.tscn" id="2_o12yy"]
 
 [node name="TestLevel" type="Node2D"]
 
@@ -9,3 +10,6 @@ tile_map_data = PackedByteArray("AAAAAAoAAAAHAAQAAAAAAAkAAAAHAAIAAAAAAAgAAAAHAAM
 tile_set = ExtResource("1_esipj")
 
 [node name="DynamicContent" type="Node2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("2_o12yy")]
+position = Vector2(50, 90)
