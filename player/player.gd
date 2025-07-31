@@ -19,21 +19,23 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 
 # Capabilities
 @export_range(0, INF) var jump_count: int = 2
-@export var can_dash: bool = false
+@export var double_jump_and_turn: bool = true
+@export var can_dash: bool = true
 
 # Stats
 @export var weight: float = 1.5
 @export var jump_height: float = 3.2 * GRID
-@export var jump_height_double: float = 3.2 * GRID
+@export var jump_height_double: float = 2.2 * GRID
 @export var jump_height_abort: float = 0.5 * GRID
 @export var speed: float = 6 * GRID
 @export var acceleration: float = 4
 @export var acceleration_air: float = 2
-@export var dash_speed: float = 10 * GRID
-@export var dash_duration: float = 0.8
+@export var dash_speed: float = 14 * GRID
+@export var dash_duration: float = 0.3
 
 # State
 var facing: float = 1
+var dashing: float = 0
 var last_animation: String = "idle"
 var jumps_done: int = 1
 
@@ -69,6 +71,8 @@ func input_state(action: String) -> int:
 	)
 
 func _physics_process(delta: float):
+	dashing -= delta
+	print_debug(dashing)
 	var turning = handle_player_input(delta)
 	move_and_slide()
 	update_animation(turning, delta)
@@ -109,15 +113,18 @@ func handle_input(
 			_velocity.x += direction.x * _acceleration
 			if sign(_velocity.x) == sign(direction.x):
 				facing = 1 if direction.x > 0 else -1
+			else:
+				dashing = 0
 			turning = true if sign(direction.x) != sign(_velocity.x) else false
 			# Speed limit
 			if abs(_velocity.x) > speed:
-				_velocity.x -= sign(velocity.x) * _acceleration
+				_velocity.x -= sign(velocity.x) * _acceleration * (1 if dashing > 0 else 2)
 				if abs(_velocity.x) < speed:
 					_velocity.x = sign(_velocity.x) * speed
 		# Dash before jump so it works even if pressed on the same frame
-		if dash_action == 2:
-			pass # TODO
+		if dash_action == 2 and can_dash:
+			_velocity.x = sign(direction.x) * dash_speed
+			dashing = dash_duration
 		# Jump
 		if jump_action == 2:
 			_velocity.y = -jump_velocity(default_gravity * weight, jump_height)
@@ -135,8 +142,10 @@ func handle_input(
 			velocity.y = max(velocity.y - g * 2, TERMINAL_VELOCITY)
 		# Double jump
 		if jump_action == 2 and jumps_done < jump_count:
-			_velocity.y = -jump_velocity(default_gravity * weight, jump_height)
+			_velocity.y = -jump_velocity(default_gravity * weight, jump_height_double)
 			jumps_done += 1
+			if double_jump_and_turn and sign(_velocity.x) != sign(direction.x):
+				_velocity.x = sign(direction.x) * speed
 		# Abort jump
 		if jump_action == -1:
 			var jump_velocity_abort = jump_velocity(default_gravity * weight, jump_height_abort)
@@ -169,17 +178,22 @@ func play_animation(animation_name: String, loop: bool = true, restart: bool = f
 		animation_player.play(animation)
 		last_animation = animation
 
-func update_animation(turning: bool, _delta: float):
+func update_animation(turning: bool, delta: float):
 	var _velocity: Vector2 = velocity_meter()
 	horizontal_flipper.scale.x = facing
 	if is_on_floor():
 		if velocity.x == 0:
 			play_animation("idle")
 		else:
-			if turning:
-				play_animation("turn")
-			else:
-				play_animation("walk")
+			if dashing > 0:
+				play_animation("dash_start", false)
+			elif last_animation == "dash_start":
+				play_animation("dash_end", false)
+			elif animation_player.current_animation != "dash_end":
+				if turning:
+					play_animation("turn")
+				else:
+					play_animation("walk")
 	else:
 		if _velocity.y < 0:
 			if jumps_done > 1:
