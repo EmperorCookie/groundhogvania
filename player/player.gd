@@ -18,7 +18,7 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 @onready var default_gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 # Capabilities
-@export_range(0, INF) var jump_count: int = 1
+@export_range(0, INF) var jump_count: int = 2
 @export var can_dash: bool = false
 
 # Stats
@@ -34,8 +34,8 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 
 # State
 var facing: float = 1
-var was_on_floor: bool = false
 var last_animation: String = "idle"
+var jumps_done: int = 1
 
 # Animations
 var sprite: String = "cat"
@@ -70,7 +70,6 @@ func input_state(action: String) -> int:
 
 func _physics_process(delta: float):
 	var turning = handle_player_input(delta)
-	was_on_floor = is_on_floor()
 	move_and_slide()
 	update_animation(turning, delta)
 
@@ -108,7 +107,8 @@ func handle_input(
 		# Accelerate
 		else:
 			_velocity.x += direction.x * _acceleration
-			facing = 1 if direction.x > 0 else -1
+			if sign(_velocity.x) == sign(direction.x):
+				facing = 1 if direction.x > 0 else -1
 			turning = true if sign(direction.x) != sign(_velocity.x) else false
 			# Speed limit
 			if abs(_velocity.x) > speed:
@@ -121,6 +121,9 @@ func handle_input(
 		# Jump
 		if jump_action == 2:
 			_velocity.y = -jump_velocity(default_gravity * weight, jump_height)
+			jumps_done = 1
+		else:
+			jumps_done = 0
 	# Air controls
 	else:
 		# Gravity
@@ -129,6 +132,10 @@ func handle_input(
 		# Terminal velocity
 		if _velocity.y > TERMINAL_VELOCITY:
 			velocity.y = max(velocity.y - g * 2, TERMINAL_VELOCITY)
+		# Double jump
+		if jump_action == 2 and jumps_done < jump_count:
+			_velocity.y = -jump_velocity(default_gravity * weight, jump_height)
+			jumps_done += 1
 		# Abort jump
 		if jump_action == -1:
 			var jump_velocity_abort = jump_velocity(default_gravity * weight, jump_height_abort)
@@ -155,7 +162,9 @@ func handle_input(
 func play_animation(animation_name: String, loop: bool = true, restart: bool = false):
 	var animation: String = get_animation(sprite, animations[animation_name])
 	if last_animation != animation or restart:
-		animation_player.get_animation(animation).loop_mode = Animation.LOOP_LINEAR if loop else Animation.LOOP_NONE
+		animation_player.get_animation(animation).loop_mode = (
+			Animation.LOOP_LINEAR if loop else Animation.LOOP_NONE
+		)
 		animation_player.play(animation)
 		last_animation = animation
 
@@ -167,12 +176,14 @@ func update_animation(turning: bool, _delta: float):
 			play_animation("idle")
 		else:
 			if turning:
-				horizontal_flipper.scale.x *= -1
 				play_animation("turn")
 			else:
 				play_animation("walk")
 	else:
 		if _velocity.y < 0:
-			play_animation("jump_start", false)
+			if jumps_done > 1:
+				play_animation("double_jump")
+			else:
+				play_animation("jump_start", false)
 		if _velocity.y >= 0:
 			play_animation("jump_end", false)
