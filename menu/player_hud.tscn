@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://c7y5vlnbew3n7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gjwcd"]
+bg_color = Color(0.0110876, 0.0110876, 0.0110876, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jsqgb"]
+bg_color = Color(1, 0, 0, 1)
+
+[node name="PlayerHud" type="Node2D"]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 640.0
+offset_bottom = 360.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 210.0
+offset_bottom = 20.0
+
+[node name="player_hp" type="ProgressBar" parent="Control/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_styles/background = SubResource("StyleBoxFlat_gjwcd")
+theme_override_styles/fill = SubResource("StyleBoxFlat_jsqgb")
+max_value = 3.0
+step = 1.0
+value = 3.0
+show_percentage = false
