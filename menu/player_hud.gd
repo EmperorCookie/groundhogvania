@@ -1,13 +1,13 @@
 extends CanvasLayer
 
 # Timer variables
-var seconds: int = 60  # 1 minute in seconds
+var seconds: int = 0  # Will be set from player's starting_time
 var timer: Timer
 @onready var restart_timer_label: Label = $Control/BoxContainer/restart_timer
 
 # HP system variables
-var hp: int = 2  # Hard coded current HP value
-var max_hp: int = 2  # Maximum HP segments
+var hp: int = 0  # Will be set from player's current_hp
+var max_hp: int = 0  # Will be set from player's max_hp
 @onready var hp_container: HBoxContainer = $Control/HPContainer
 var hp_segments: Array[ColorRect] = []
 var hp_shadows: Array[ColorRect] = []  # Shadow/silhouette segments
@@ -23,6 +23,9 @@ var hp_shadows: Array[ColorRect] = []  # Shadow/silhouette segments
 @onready var remove_segment_btn: Button = $Control/DevButtons/RemoveSegmentBtn
 
 func _ready():
+	# Initialize values from player
+	initialize_from_player()
+	
 	# Initialize HP system
 	setup_hp_system()
 	
@@ -41,6 +44,23 @@ func _ready():
 	
 	# Display initial time on label
 	update_timer_display()
+
+func initialize_from_player():
+	# Get reference to the player node (direct sibling reference)
+	var player = get_node("../Player")
+	
+	if player:
+		# Pull values from player
+		max_hp = player.max_hp
+		hp = player.current_hp
+		seconds = player.starting_time
+		print("Initialized HUD from player - HP: ", hp, "/", max_hp, " Time: ", seconds, "s")
+	else:
+		# Fallback values if player not found
+		max_hp = 3
+		hp = 3
+		seconds = 45
+		print("Player not found, using fallback values - HP: ", hp, "/", max_hp, " Time: ", seconds, "s")
 
 func setup_timer_intro():
 	# Get the timer container (BoxContainer)
@@ -275,15 +295,23 @@ func remove_hp_segment():
 
 # Developer button handlers
 func _on_take_damage_pressed():
-	take_damage(1)
+	var player = get_node("../Player")
+	player.player_take_damage()
 
 func _on_heal_pressed():
-	heal(1)
+	var player = get_node("../Player")
+	player.player_heal()
 
 func _on_add_segment_pressed():
+	var player = get_node("../Player")
+	player.max_hp += 1
+	player.current_hp += 1
 	add_hp_segment()
 
 func _on_remove_segment_pressed():
+	var player = get_node("../Player")
+	player.max_hp -= 1
+	player.current_hp -= 1
 	remove_hp_segment()
 
 func _on_timer_timeout():

@@ -62,16 +62,20 @@ grow_vertical = 0
 
 [node name="TakeDamageBtn" type="Button" parent="Control/DevButtons"]
 layout_mode = 2
+focus_mode = 0
 text = "Take Damage"
 
 [node name="HealBtn" type="Button" parent="Control/DevButtons"]
 layout_mode = 2
+focus_mode = 0
 text = "Heal"
 
 [node name="AddSegmentBtn" type="Button" parent="Control/DevButtons"]
 layout_mode = 2
+focus_mode = 0
 text = "Add Segment"
 
 [node name="RemoveSegmentBtn" type="Button" parent="Control/DevButtons"]
 layout_mode = 2
+focus_mode = 0
 text = "Remove Segment"

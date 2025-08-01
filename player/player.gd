@@ -34,6 +34,18 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 @export var dash_speed: float = 14 * GRID
 @export var dash_duration: float = 0.3
 
+# Player stats
+@export var max_hp: int = 3
+@export var current_hp: int = 3
+@export var starting_time: int = 45 # In seconds
+
+# HUD reference
+var player_hud
+
+func _ready():
+	# Get reference to the PlayerHud (sibling node)
+	player_hud = get_node("../PlayerHud")
+
 # State
 var facing: float = 1
 var dashing: float = 0
@@ -206,3 +218,18 @@ func update_animation(turning: bool, _delta: float):
 				play_animation("jump_start", false)
 		if _velocity.y >= 0:
 			play_animation("jump_end", false)
+
+
+
+# Removes HP from the player and calls the player_hud.gd to update the display
+func player_take_damage():
+	current_hp = clamp(current_hp - 1, 0, max_hp)
+	player_hud.take_damage(1)
+	if current_hp == 0:
+		# Restart the current level
+		get_tree().reload_current_scene()
+
+# Adds HP to the player and calls the player_hud.gd to update the display
+func player_heal():
+	current_hp = clamp(current_hp + 1, 0, max_hp)
+	player_hud.heal(1)
