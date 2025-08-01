@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://doaui24fomcxa" path="res://camera/target_camera.tscn" id="3_nkijq"]
 [ext_resource type="PackedScene" uid="uid://5yuhe55teig6" path="res://player/player.tscn" id="3_yc6rk"]
 [ext_resource type="PackedScene" uid="uid://25jvu1t7w5ho" path="res://menu/player_hud.tscn" id="4_yc6rk"]
-[ext_resource type="PackedScene" uid="uid://d2i2j5p2nqktx" path="res://player/preview_controller.tscn" id="5_x6tsm"]
+[ext_resource type="PackedScene" path="res://player/preview_controller.tscn" id="5_x6tsm"]
 [ext_resource type="Script" uid="uid://bu8hcbjroii8c" path="res://player/preview_controller.gd" id="6_t82ty"]
 [ext_resource type="PackedScene" uid="uid://cmctud1jb30gq" path="res://items/item_heart.tscn" id="7_gl4gk"]
 [ext_resource type="PackedScene" uid="uid://e1l73ewb8ssq" path="res://items/item_add_time.tscn" id="8_jrhx3"]
@@ -30,6 +30,24 @@ lead = 0.0
 [node name="Player" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("3_yc6rk")]
 position = Vector2(-468, 395)
 camera = NodePath("../PlayerCamera")
+jump_count = 2
+double_jump_and_turn = true
+can_dash = true
+max_hp = 2
+current_hp = 1
+starting_time = 45
+weight = 1.5
+jump_height = 1.42222
+jump_height_double = 0.977778
+jump_height_abort = 0.222222
+koyote_time = 0.1
+speed = 2.66667
+acceleration = 4.0
+acceleration_air = 2.0
+dash_speed = 6.22222
+dash_duration = 0.3
+hurt_time = 0.2
+hurt_speed = Vector2(-2.66667, -2.66667)
 
 [node name="PlayerCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_nkijq")]
 target = NodePath("../Player")
