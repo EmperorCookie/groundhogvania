@@ -249,6 +249,7 @@ func player_take_damage():
 
 func player_death():
 	# Restart the current level
+	await get_tree().create_timer(3.0).timeout  # Wait 2 seconds before restarting level
 	get_tree().reload_current_scene()
 
 # Adds HP to the player and calls the player_hud.gd to update the display
