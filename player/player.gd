@@ -5,6 +5,7 @@ extends CharacterBody2D
 # References
 @export var horizontal_flipper: Node2D = null
 @export var animation_player: AnimationPlayer = null
+@onready var player_hud = get_node("../PlayerHud")
 
 # Scale
 const CHARACTER_HEIGHT_PX: int = 12
@@ -38,13 +39,6 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 @export var dash_duration: float = 0.3
 @export var hurt_time: float = 0.2
 @export var hurt_speed: Vector2 = Vector2(-6 * GRID, -6 * GRID)
-
-# HUD reference
-var player_hud
-
-func _ready():
-	# Get reference to the PlayerHud (sibling node)
-	player_hud = get_node("../PlayerHud")
 
 # State
 var facing: float = 1
