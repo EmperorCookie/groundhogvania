@@ -22,7 +22,6 @@ disable_nodes = [NodePath("../PreviewCamera")]
 
 [node name="PreviewCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_nkijq")]
 target = NodePath("../PreviewController")
-spring = 20.0
 lead = 0.0
 
 [node name="Player" parent="." instance=ExtResource("3_yc6rk")]
