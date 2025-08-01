@@ -208,6 +208,9 @@ func play_animation(animation_name: String, loop: bool = true, restart: bool = f
 func update_animation(turning: bool, _delta: float):
 	var _velocity: Vector2 = velocity_meter()
 	horizontal_flipper.scale.x = facing
+	if current_hp <= 0:
+		play_animation("death")
+		return
 	if hurt_timer > 0:
 		play_animation("hurt")
 		return
