@@ -24,8 +24,8 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 @export var can_dash: bool = true
 
 # Stats
-@export var max_hp: int = 3
-@export var current_hp: int = 3
+@export var max_hp: int = 2
+@export var current_hp: int = 1
 @export var starting_time: int = 45 # In seconds
 @export var weight: float = 1.5
 @export var jump_height: float = 3.2 * GRID
@@ -236,7 +236,7 @@ func update_animation(turning: bool, _delta: float):
 # Removes HP from the player and calls the player_hud.gd to update the display
 func player_take_damage():
 	current_hp = clamp(current_hp - 1, 0, max_hp)
-	player_hud.take_damage(1)
+	player_hud.update_segments(current_hp)
 	hurt_timer = hurt_time
 	impulse.x = facing * hurt_speed.x
 	impulse.y = hurt_speed.y
@@ -251,4 +251,4 @@ func player_death():
 # Adds HP to the player and calls the player_hud.gd to update the display
 func player_heal():
 	current_hp = clamp(current_hp + 1, 0, max_hp)
-	player_hud.heal(1)
+	player_hud.update_segments(current_hp)

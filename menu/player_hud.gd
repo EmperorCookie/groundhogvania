@@ -6,31 +6,13 @@ var timer: Timer
 @onready var restart_timer_label: Label = $Control/BoxContainer/restart_timer
 
 # HP system variables
-var hp: int = 0  # Will be set from player's current_hp
-var max_hp: int = 0  # Will be set from player's max_hp
 @onready var hp_container: HBoxContainer = $Control/HPContainer
-var hp_segments: Array[ColorRect] = []
-var hp_shadows: Array[ColorRect] = []  # Shadow/silhouette segments
-
-# Animation variables
-# Note: Tweens are created with create_tween() in Godot 4, not stored as variables
-
-# Developer buttons
-@onready var dev_buttons: VBoxContainer = $Control/DevButtons
-@onready var take_damage_btn: Button = $Control/DevButtons/TakeDamageBtn
-@onready var heal_btn: Button = $Control/DevButtons/HealBtn
-@onready var add_segment_btn: Button = $Control/DevButtons/AddSegmentBtn
-@onready var remove_segment_btn: Button = $Control/DevButtons/RemoveSegmentBtn
+@onready var hp_segment_1: ColorRect = $Control/HPContainer/HP1
+@onready var hp_segment_2: ColorRect = $Control/HPContainer/HP2
 
 func _ready():
 	# Initialize values from player
 	initialize_from_player()
-	
-	# Initialize HP system
-	setup_hp_system()
-	
-	# Setup developer buttons (only visible in debug builds)
-	setup_dev_buttons()
 	
 	# Setup timer intro animation
 	setup_timer_intro()
@@ -44,6 +26,9 @@ func _ready():
 	
 	# Display initial time on label
 	update_timer_display()
+	
+	# Initialize HP display from player
+	call_deferred("initialize_hp_from_player")
 
 func initialize_from_player():
 	# Get reference to the player node (direct sibling reference)
@@ -51,16 +36,24 @@ func initialize_from_player():
 	
 	if player:
 		# Pull values from player
-		max_hp = player.max_hp
-		hp = player.current_hp
 		seconds = player.starting_time
-		print("Initialized HUD from player - HP: ", hp, "/", max_hp, " Time: ", seconds, "s")
+		print("Initialized HUD from player - Time: ", seconds, "s")
 	else:
 		# Fallback values if player not found
-		max_hp = 3
-		hp = 3
 		seconds = 45
-		print("Player not found, using fallback values - HP: ", hp, "/", max_hp, " Time: ", seconds, "s")
+		print("Player not found, using fallback time: ", seconds, "s")
+
+func initialize_hp_from_player():
+	# Get reference to the player node and update HP display
+	var player = get_node("../Player")
+	
+	if player:
+		# Get current HP from player and update segments
+		var current_hp = player.current_hp
+		print("Getting HP from player: ", current_hp)
+		update_segments(current_hp)
+	else:
+		print("Player not found, cannot initialize HP display")
 
 func setup_timer_intro():
 	# Get the timer container (BoxContainer)
@@ -103,216 +96,35 @@ func setup_timer_intro():
 	# Fade flash effect as it moves up
 	intro_tween.tween_property(timer_label, "modulate", Color.WHITE, 1.0)
 
-func setup_dev_buttons():
-	# Only show developer buttons in debug builds (editor/development)
-	if OS.is_debug_build():
-		dev_buttons.visible = true
-		# Connect button signals
-		take_damage_btn.pressed.connect(_on_take_damage_pressed)
-		heal_btn.pressed.connect(_on_heal_pressed)
-		add_segment_btn.pressed.connect(_on_add_segment_pressed)
-		remove_segment_btn.pressed.connect(_on_remove_segment_pressed)
-	else:
-		dev_buttons.visible = false
-
-func setup_hp_system():
-	# Clear any existing segments first
-	for child in hp_container.get_children():
-		child.free()  # Use free() instead of queue_free() for immediate removal
+func update_segments(current_hp: int):
+	print("update_segments called with HP: ", current_hp)
 	
-	hp_segments.clear()
-	hp_shadows.clear()
-	
-	print("Setting up HP system with max_hp: ", max_hp, " current hp: ", hp)
-	
-	# Create paired shadow and active segments
-	for i in range(max_hp):
-		# Create a container for each HP segment pair
-		var segment_container = Control.new()
-		segment_container.layout_mode = 2
-		segment_container.custom_minimum_size = Vector2(75, 20)
-		segment_container.name = "HPSegment" + str(i)
-		hp_container.add_child(segment_container)
+	# Check if HP segments are ready
+	if not hp_segment_1 or not hp_segment_2:
+		print("HP segments not ready yet, trying to get them manually...")
+		hp_segment_1 = $Control/HPContainer/HP1
+		hp_segment_2 = $Control/HPContainer/HP2
 		
-		# Create shadow segment (background)
-		var shadow_segment = ColorRect.new()
-		shadow_segment.layout_mode = 1
-		shadow_segment.anchors_preset = 15  # Full rect
-		shadow_segment.color = Color(0, 0, 0, 0.6)  # Black with 60% opacity
-		shadow_segment.name = "Shadow" + str(i)
-		segment_container.add_child(shadow_segment)
-		hp_shadows.append(shadow_segment)
-		
-		# Create active segment (foreground)
-		var active_segment = ColorRect.new()
-		active_segment.layout_mode = 1
-		active_segment.anchors_preset = 15  # Full rect
-		active_segment.color = Color.RED
-		active_segment.name = "Active" + str(i)
-		segment_container.add_child(active_segment)
-		hp_segments.append(active_segment)
-		
-		print("Created segment ", i, " - Shadow: ", shadow_segment.color, " Active: ", active_segment.color)
+		if not hp_segment_1 or not hp_segment_2:
+			print("Error: HP segments still not found!")
+			return
 	
-	# Update HP display
-	update_hp_display()
-
-func update_hp_display():
-	print("Updating HP display - Current HP: ", hp, " Max HP: ", max_hp)
-	print("HP segments count: ", hp_segments.size(), " Shadow segments count: ", hp_shadows.size())
-	
-	# Update visibility of active HP segments based on current HP
-	for i in range(hp_segments.size()):
-		if i < hp:
-			# Show this HP segment (full health)
-			hp_segments[i].visible = true
-			print("Segment ", i, " - VISIBLE (red)")
-		else:
-			# Hide this HP segment (lost health) - shadow will still show
-			hp_segments[i].visible = false
-			print("Segment ", i, " - HIDDEN (shadow should show)")
-	
-	# Ensure shadows are always visible
-	for i in range(hp_shadows.size()):
-		hp_shadows[i].visible = true
-		print("Shadow ", i, " - VISIBLE (gray)")
-
-func take_damage(damage: int = 1):
-	# Function to handle taking damage
-	var old_hp = hp
-	hp = max(0, hp - damage)
-	
-	# Animate the lost HP segments
-	for i in range(old_hp - 1, hp - 1, -1):  # From last HP to current HP
-		if i < hp_segments.size():
-			animate_damage(hp_segments[i])
-	
-	# Update display after a short delay to let animation start
-	await get_tree().create_timer(0.1).timeout
-	update_hp_display()
-	
-	if hp <= 0:
-		print("Player died!")
-
-func animate_damage(segment: ColorRect):
-	# Simple flash animation for damage
-	var original_color = segment.color
-	
-	# Create a new tween for this animation
-	var damage_tween = create_tween()
-	
-	# Flash white briefly, then back to red
-	damage_tween.tween_property(segment, "color", Color.WHITE, 0.1)
-	damage_tween.tween_property(segment, "color", original_color, 0.1)
-
-func heal(amount: int = 1):
-	# Function to handle healing
-	var old_hp = hp
-	hp = min(max_hp, hp + amount)  # Cap at max HP
-	
-	# Animate the restored HP segments
-	for i in range(old_hp, hp):
-		if i < hp_segments.size():
-			animate_heal(hp_segments[i])
-	
-	update_hp_display()
-
-func animate_heal(segment: ColorRect):
-	# Simple flash animation for healing
-	var original_color = segment.color
-	
-	# Create a new tween for this animation
-	var heal_tween = create_tween()
-	
-	# Flash green briefly, then back to red
-	heal_tween.tween_property(segment, "color", Color.GREEN, 0.15)
-	heal_tween.tween_property(segment, "color", original_color, 0.15)
-
-func add_hp_segment():
-	# Add a new HP segment (increase max HP)
-	var lost_hp = max_hp - hp  # Calculate how much HP was lost
-	max_hp += 1
-	hp = max_hp - lost_hp  # Maintain the same amount of lost HP
-	
-	# Create a container for the new HP segment pair
-	var segment_container = Control.new()
-	segment_container.layout_mode = 2
-	segment_container.custom_minimum_size = Vector2(75, 20)
-	hp_container.add_child(segment_container)
-	
-	# Create shadow segment (background)
-	var new_shadow = ColorRect.new()
-	new_shadow.layout_mode = 1
-	new_shadow.anchors_preset = 15  # Full rect
-	new_shadow.color = Color(0, 0, 0, 0.6)  # Black with 60% opacity
-	segment_container.add_child(new_shadow)
-	hp_shadows.append(new_shadow)
-	
-	# Create active segment (foreground)
-	var new_segment = ColorRect.new()
-	new_segment.layout_mode = 1
-	new_segment.anchors_preset = 15  # Full rect
-	new_segment.color = Color.RED
-	segment_container.add_child(new_segment)
-	hp_segments.append(new_segment)
-	
-	# Animate the new segment with a flash
-	animate_new_segment_flash(new_segment)
-	
-	update_hp_display()
-
-func animate_new_segment_flash(segment: ColorRect):
-	# Simple flash animation for new segment
-	var original_color = segment.color
-	
-	# Create a new tween for this animation
-	var new_segment_tween = create_tween()
-	
-	# Flash gold/yellow briefly, then back to red
-	new_segment_tween.tween_property(segment, "color", Color.YELLOW, 0.2)
-	new_segment_tween.tween_property(segment, "color", original_color, 0.2)
-
-func remove_hp_segment():
-	# Remove an HP segment (decrease max HP)
-	if max_hp > 1:  # Don't go below 1 max HP
-		max_hp -= 1
-		hp = min(hp, max_hp)  # Adjust current HP if needed
-		
-		# Remove the last active segment
-		if hp_segments.size() > 0:
-			hp_segments.pop_back()
-		
-		# Remove the last shadow segment
-		if hp_shadows.size() > 0:
-			hp_shadows.pop_back()
-		
-		# Remove the last container (which contains both shadow and active)
-		var children = hp_container.get_children()
-		if children.size() > 0:
-			children[-1].queue_free()
-		
-		update_hp_display()
-
-# Developer button handlers
-func _on_take_damage_pressed():
-	var player = get_node("../Player")
-	player.player_take_damage()
-
-func _on_heal_pressed():
-	var player = get_node("../Player")
-	player.player_heal()
-
-func _on_add_segment_pressed():
-	var player = get_node("../Player")
-	player.max_hp += 1
-	player.current_hp += 1
-	add_hp_segment()
-
-func _on_remove_segment_pressed():
-	var player = get_node("../Player")
-	player.max_hp -= 1
-	player.current_hp -= 1
-	remove_hp_segment()
+	# Update HP segments based on current HP (0, 1, or 2)
+	match current_hp:
+		0:
+			hp_segment_1.visible = false
+			hp_segment_2.visible = false
+			print("Both segments HIDDEN")
+		1:
+			hp_segment_1.visible = true
+			hp_segment_2.visible = false
+			print("Segment 1 VISIBLE, Segment 2 HIDDEN")
+		2:
+			hp_segment_1.visible = true
+			hp_segment_2.visible = true
+			print("Both segments VISIBLE")
+		_:
+			print("Invalid HP value: ", current_hp)
 
 func _on_timer_timeout():
 	# Decrease seconds and update display
