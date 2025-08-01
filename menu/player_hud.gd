@@ -1,4 +1,4 @@
-extends Node2D
+extends CanvasLayer
 
 # Timer variables
 var seconds: int = 60  # 1 minute in seconds

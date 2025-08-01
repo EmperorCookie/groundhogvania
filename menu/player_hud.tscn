@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://2ak23c2yneox" path="res://menu/player_hud.gd" id="1_jsqgb"]
 
-[node name="PlayerHud" type="Node2D"]
+[node name="PlayerHud" type="CanvasLayer"]
 script = ExtResource("1_jsqgb")
 
 [node name="Control" type="Control" parent="."]

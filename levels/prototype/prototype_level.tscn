@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=4 uid="uid://byq04x76yogq2"]
+[gd_scene load_steps=5 format=4 uid="uid://byq04x76yogq2"]
 
 [ext_resource type="TileSet" uid="uid://duvwwdne6hncq" path="res://assets/blocking_tileset.tres" id="1_7xbuc"]
 [ext_resource type="PackedScene" uid="uid://doaui24fomcxa" path="res://camera/target_camera.tscn" id="3_nkijq"]
 [ext_resource type="PackedScene" uid="uid://5yuhe55teig6" path="res://player/player.tscn" id="3_yc6rk"]
+[ext_resource type="PackedScene" uid="uid://25jvu1t7w5ho" path="res://menu/player_hud.tscn" id="4_yc6rk"]
 
 [node name="PrototypeLevel" type="Node2D"]
 
@@ -16,3 +17,5 @@ position = Vector2(-468, 395)
 
 [node name="TargetCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_nkijq")]
 target = NodePath("../Player")
+
+[node name="PlayerHud" parent="." instance=ExtResource("4_yc6rk")]
