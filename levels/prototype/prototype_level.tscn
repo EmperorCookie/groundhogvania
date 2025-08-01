@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://5yuhe55teig6" path="res://player/player.tscn" id="3_yc6rk"]
 [ext_resource type="PackedScene" uid="uid://25jvu1t7w5ho" path="res://menu/player_hud.tscn" id="4_yc6rk"]
 [ext_resource type="PackedScene" path="res://player/preview_controller.tscn" id="5_x6tsm"]
-[ext_resource type="Script" path="res://player/preview_controller.gd" id="6_t82ty"]
+[ext_resource type="Script" uid="uid://bu8hcbjroii8c" path="res://player/preview_controller.gd" id="6_t82ty"]
 
 [node name="PrototypeLevel" type="Node2D"]
 
