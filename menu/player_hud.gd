@@ -10,6 +10,8 @@ var timer: Timer
 @onready var hp_segment_1: ColorRect = $Control/HPContainer/HP1
 @onready var hp_segment_2: ColorRect = $Control/HPContainer/HP2
 
+
+
 func _ready():
 	# Initialize values from player
 	initialize_from_player()
@@ -30,6 +32,8 @@ func _ready():
 	# Initialize HP display from player
 	call_deferred("initialize_hp_from_player")
 
+
+
 func initialize_from_player():
 	# Get reference to the player node (direct sibling reference)
 	var player = get_node("../Player")
@@ -38,22 +42,17 @@ func initialize_from_player():
 		# Pull values from player
 		seconds = player.starting_time
 		print("Initialized HUD from player - Time: ", seconds, "s")
-	else:
-		# Fallback values if player not found
-		seconds = 45
-		print("Player not found, using fallback time: ", seconds, "s")
-
-func initialize_hp_from_player():
-	# Get reference to the player node and update HP display
-	var player = get_node("../Player")
-	
-	if player:
-		# Get current HP from player and update segments
 		var current_hp = player.current_hp
 		print("Getting HP from player: ", current_hp)
 		update_segments(current_hp)
 	else:
-		print("Player not found, cannot initialize HP display")
+		# Fallback values if player not found
+		seconds = 45
+		print("Player not found, using fallback time: ", seconds, "s")
+		update_segments(1)
+		print("Player not found, using fallback of 1 hp")
+
+
 
 func setup_timer_intro():
 	# Get the timer container (BoxContainer)
@@ -96,6 +95,8 @@ func setup_timer_intro():
 	# Fade flash effect as it moves up
 	intro_tween.tween_property(timer_label, "modulate", Color.WHITE, 1.0)
 
+
+
 func update_segments(current_hp: int):
 	print("update_segments called with HP: ", current_hp)
 	
@@ -126,11 +127,15 @@ func update_segments(current_hp: int):
 		_:
 			print("Invalid HP value: ", current_hp)
 
+
+
 func _on_timer_timeout():
 	# Decrease seconds and update display
 	if seconds > 0:
 		seconds -= 1
 	update_timer_display()
+
+
 
 func update_timer_display():
 	# Convert seconds to minutes:seconds format and update label
@@ -147,9 +152,13 @@ func update_timer_display():
 	print("Current time: " + time_string)  # Keep debug print for now
 
 
+
 func _on_take_damage_btn_pressed() -> void:
 	var player = get_node("../Player")
 	player.player_take_damage()
+
+
+
 
 func _on_heal_btn_pressed() -> void:
 	var player = get_node("../Player")

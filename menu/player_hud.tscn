@@ -50,8 +50,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -143.0
-offset_top = -136.0
+offset_left = -160.0
+offset_top = -76.0
+offset_right = -10.0
+offset_bottom = -10.0
 grow_horizontal = 0
 grow_vertical = 0
 
@@ -64,16 +66,6 @@ text = "Take Damage"
 layout_mode = 2
 focus_mode = 0
 text = "Heal"
-
-[node name="AddSegmentBtn" type="Button" parent="Control/DevButtons"]
-layout_mode = 2
-focus_mode = 0
-text = "Add Segment"
-
-[node name="RemoveSegmentBtn" type="Button" parent="Control/DevButtons"]
-layout_mode = 2
-focus_mode = 0
-text = "Remove Segment"
 
 [connection signal="pressed" from="Control/DevButtons/TakeDamageBtn" to="." method="_on_take_damage_btn_pressed"]
 [connection signal="pressed" from="Control/DevButtons/HealBtn" to="." method="_on_heal_btn_pressed"]
