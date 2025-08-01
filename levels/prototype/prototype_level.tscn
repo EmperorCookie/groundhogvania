@@ -15,6 +15,7 @@ tile_map_data = PackedByteArray("AAAAABUAAAABAAEAAAAAABQAAAAFAAEAAAAPABQAAAAHAAc
 tile_set = ExtResource("1_7xbuc")
 
 [node name="PreviewController" parent="." node_paths=PackedStringArray("enable_nodes", "disable_nodes") instance=ExtResource("5_x6tsm")]
+position = Vector2(64, 144)
 scale = Vector2(2, 2)
 script = ExtResource("6_t82ty")
 enable_nodes = [NodePath("../Player"), NodePath("../PlayerCamera"), NodePath("../PlayerHud")]
