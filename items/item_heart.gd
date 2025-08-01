@@ -23,10 +23,11 @@ func create_float_animation():
 func _on_body_entered(body: Node2D) -> void:
 	# Check if the body that entered is the player
 	if body.name == "Player" or body.has_method("is_player"):
-		print("Picked up a heart!")
-		
-		# Give the player +1 HP
-		body.player_heal()
-		
-		# Remove the item from the world
-		queue_free()
+		if body.current_hp > 0:
+			print("Picked up a heart!")
+			
+			# Give the player +1 HP
+			body.player_heal()
+			
+			# Remove the item from the world
+			queue_free()
