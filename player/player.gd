@@ -87,7 +87,7 @@ func _physics_process(delta: float):
 	dashing -= delta
 	hurt_timer -= delta
 	var turning: bool = false
-	if hurt_timer > 0:
+	if hurt_timer > 0 or current_hp <= 0:
 		turning = handle_input(Vector2.ZERO, 0, 0, delta)
 	else:
 		turning = handle_player_input(delta)
