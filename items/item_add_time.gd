@@ -23,10 +23,12 @@ func create_float_animation():
 func _on_body_entered(body: Node2D) -> void:
 	# Check if the body that entered is the player
 	if body.name == "Player" or body.has_method("is_player"):
-		print("Picked up a heart!")
+		print("Added permanent time to the clock!")
 		
-		# Give the player +1 HP
-		body.player_heal()
+		# Add permanent time to the players clock
+		body.starting_time += 30
+		var player_hud = get_node("../PlayerHud")
+		player_hud.seconds += 30
 		
 		# Remove the item from the world
 		queue_free()

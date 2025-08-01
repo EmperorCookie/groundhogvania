@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=4 uid="uid://byq04x76yogq2"]
+[gd_scene load_steps=9 format=4 uid="uid://byq04x76yogq2"]
 
 [ext_resource type="TileSet" uid="uid://duvwwdne6hncq" path="res://assets/blocking_tileset.tres" id="1_7xbuc"]
 [ext_resource type="PackedScene" uid="uid://doaui24fomcxa" path="res://camera/target_camera.tscn" id="3_nkijq"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://player/preview_controller.tscn" id="5_x6tsm"]
 [ext_resource type="Script" uid="uid://bu8hcbjroii8c" path="res://player/preview_controller.gd" id="6_t82ty"]
 [ext_resource type="PackedScene" uid="uid://cmctud1jb30gq" path="res://items/item_heart.tscn" id="7_gl4gk"]
+[ext_resource type="PackedScene" uid="uid://e1l73ewb8ssq" path="res://items/item_add_time.tscn" id="8_jrhx3"]
 
 [node name="PrototypeLevel" type="Node2D"]
 
@@ -36,3 +37,6 @@ target = NodePath("../Player")
 
 [node name="ItemHeart" parent="." instance=ExtResource("7_gl4gk")]
 position = Vector2(48, 325)
+
+[node name="ItemAddTime" parent="." instance=ExtResource("8_jrhx3")]
+position = Vector2(380, 228)

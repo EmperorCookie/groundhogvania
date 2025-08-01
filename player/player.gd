@@ -26,6 +26,7 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 # Stats
 @export var max_hp: int = 2
 @export var current_hp: int = 1
+@export var current_time: int = 45 # In seconds
 @export var starting_time: int = 45 # In seconds
 @export var weight: float = 1.5
 @export var jump_height: float = 3.2 * GRID
