@@ -22,6 +22,8 @@ _data = {
 &"RESET": SubResource("Animation_atr2t")
 }
 
+[sub_resource type="Animation" id="Animation_tfew5"]
+
 [sub_resource type="Animation" id="Animation_gak08"]
 length = 0.400007
 loop_mode = 1
@@ -38,8 +40,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5]
 }
-
-[sub_resource type="Animation" id="Animation_tfew5"]
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_atr2t"]
 _data = {
