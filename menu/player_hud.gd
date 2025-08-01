@@ -6,8 +6,8 @@ var timer: Timer
 @onready var restart_timer_label: Label = $Control/BoxContainer/restart_timer
 
 # HP system variables
-var hp: int = 2  # Hard coded HP value
-var max_hp: int = 3  # Maximum HP segments
+var hp: int = 2  # Hard coded current HP value
+var max_hp: int = 2  # Maximum HP segments
 @onready var hp_container: HBoxContainer = $Control/HPContainer
 var hp_segments: Array[ColorRect] = []
 var hp_shadows: Array[ColorRect] = []  # Shadow/silhouette segments
@@ -29,6 +29,9 @@ func _ready():
 	# Setup developer buttons (only visible in debug builds)
 	setup_dev_buttons()
 	
+	# Setup timer intro animation
+	setup_timer_intro()
+	
 	# Create and configure the timer
 	timer = Timer.new()
 	timer.wait_time = 1.0  # 1 second interval
@@ -38,6 +41,47 @@ func _ready():
 	
 	# Display initial time on label
 	update_timer_display()
+
+func setup_timer_intro():
+	# Get the timer container (BoxContainer)
+	var timer_container = $Control/BoxContainer
+	var timer_label = restart_timer_label
+	
+	# Store the final position
+	var final_position = timer_container.position
+	
+	# Start the timer in the center of the screen
+	var screen_center_x = 640 / 2  # Half of screen width
+	var screen_center_y = 360 / 2  # Half of screen height
+	
+	# Position timer container at center (accounting for its size)
+	timer_container.position = Vector2(screen_center_x - 20, screen_center_y - 20)
+	
+	# Start flashing animation
+	var flash_tween = create_tween()
+	flash_tween.set_loops()  # Loop indefinitely
+	flash_tween.tween_property(timer_label, "modulate", Color.WHITE, 0.4)
+	flash_tween.tween_property(timer_label, "modulate", Color.YELLOW, 0.4)
+	
+	# Wait 1.5 seconds before moving
+	await get_tree().create_timer(2.0).timeout
+	
+	# Stop the flashing
+	flash_tween.kill()
+	
+	# Animate timer floating up with smooth bounce effect
+	var intro_tween = create_tween()
+	intro_tween.set_parallel(true)  # Allow parallel animations
+	
+	# Use back easing for a smooth overshoot and settle effect
+	intro_tween.set_ease(Tween.EASE_OUT)
+	intro_tween.set_trans(Tween.TRANS_BACK)
+	
+	# Single smooth movement to final position with bounce
+	intro_tween.tween_property(timer_container, "position", final_position, 1.0)
+	
+	# Fade flash effect as it moves up
+	intro_tween.tween_property(timer_label, "modulate", Color.WHITE, 1.0)
 
 func setup_dev_buttons():
 	# Only show developer buttons in debug builds (editor/development)

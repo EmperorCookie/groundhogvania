@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=4 uid="uid://cxn86u68ckjjp"]
+[gd_scene load_steps=5 format=4 uid="uid://cxn86u68ckjjp"]
 
 [ext_resource type="TileSet" uid="uid://duvwwdne6hncq" path="res://assets/blocking_tileset.tres" id="1_a747b"]
 [ext_resource type="PackedScene" uid="uid://5yuhe55teig6" path="res://player/player.tscn" id="2_65yy3"]
+[ext_resource type="PackedScene" uid="uid://cvd1n27hndunl" path="res://powerups/power_up_double_jump.tscn" id="3_65yy3"]
+[ext_resource type="PackedScene" uid="uid://qrvckb2va54f" path="res://powerups/power_up_dash.tscn" id="4_qo0ko"]
 
 [node name="TestLevel" type="Node2D"]
 
@@ -13,3 +15,11 @@ tile_set = ExtResource("1_a747b")
 
 [node name="Player" parent="." instance=ExtResource("2_65yy3")]
 position = Vector2(50, 90)
+jump_count = 1
+can_dash = false
+
+[node name="PowerUpDoubleJump" parent="." instance=ExtResource("3_65yy3")]
+position = Vector2(482, 344)
+
+[node name="PowerUpDoubleJump2" parent="." instance=ExtResource("4_qo0ko")]
+position = Vector2(111, 117)
