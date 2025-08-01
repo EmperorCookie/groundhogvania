@@ -3,6 +3,8 @@ extends CanvasLayer
 # Timer variables
 var seconds: int = 0  # Will be set from player's starting_time
 var timer: Timer
+var timer_paused: bool = false
+var pause_time_remaining: float = 0.0
 @onready var restart_timer_label: Label = $Control/BoxContainer/restart_timer
 
 # HP system variables
@@ -130,10 +132,30 @@ func update_segments(current_hp: int):
 
 
 func _on_timer_timeout():
-	# Decrease seconds and update display
+	# If timer is paused, count down pause time instead
+	if timer_paused:
+		pause_time_remaining -= 1.0
+		if pause_time_remaining <= 0:
+			timer_paused = false
+			print("Timer unpaused!")
+		return
+	
+	# Normal timer countdown
 	if seconds > 0:
 		seconds -= 1
 	update_timer_display()
+
+func pause_timer(pause_duration: float):
+	# Pause the timer for a specific duration
+	timer_paused = true
+	pause_time_remaining = pause_duration
+	print("Timer paused for ", pause_duration, " seconds")
+
+func unpause_timer():
+	# Manually unpause the timer
+	timer_paused = false
+	pause_time_remaining = 0.0
+	print("Timer manually unpaused!")
 
 
 
