@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=4 uid="uid://byq04x76yogq2"]
+[gd_scene load_steps=8 format=4 uid="uid://byq04x76yogq2"]
 
 [ext_resource type="TileSet" uid="uid://duvwwdne6hncq" path="res://assets/blocking_tileset.tres" id="1_7xbuc"]
 [ext_resource type="PackedScene" uid="uid://doaui24fomcxa" path="res://camera/target_camera.tscn" id="3_nkijq"]
 [ext_resource type="PackedScene" uid="uid://5yuhe55teig6" path="res://player/player.tscn" id="3_yc6rk"]
 [ext_resource type="PackedScene" uid="uid://25jvu1t7w5ho" path="res://menu/player_hud.tscn" id="4_yc6rk"]
-[ext_resource type="PackedScene" uid="uid://d2i2j5p2nqktx" path="res://player/preview_controller.tscn" id="5_x6tsm"]
+[ext_resource type="PackedScene" path="res://player/preview_controller.tscn" id="5_x6tsm"]
 [ext_resource type="Script" uid="uid://bu8hcbjroii8c" path="res://player/preview_controller.gd" id="6_t82ty"]
+[ext_resource type="PackedScene" uid="uid://cmctud1jb30gq" path="res://items/item_heart.tscn" id="7_gl4gk"]
 
 [node name="PrototypeLevel" type="Node2D"]
 
@@ -32,3 +33,6 @@ position = Vector2(-468, 395)
 target = NodePath("../Player")
 
 [node name="PlayerHud" parent="." instance=ExtResource("4_yc6rk")]
+
+[node name="ItemHeart" parent="." instance=ExtResource("7_gl4gk")]
+position = Vector2(48, 325)
