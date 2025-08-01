@@ -23,6 +23,9 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 @export var can_dash: bool = true
 
 # Stats
+@export var max_hp: int = 3
+@export var current_hp: int = 3
+@export var starting_time: int = 45 # In seconds
 @export var weight: float = 1.5
 @export var jump_height: float = 3.2 * GRID
 @export var jump_height_double: float = 2.2 * GRID
@@ -33,11 +36,8 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 @export var acceleration_air: float = 2
 @export var dash_speed: float = 14 * GRID
 @export var dash_duration: float = 0.3
-
-# Player stats
-@export var max_hp: int = 3
-@export var current_hp: int = 3
-@export var starting_time: int = 45 # In seconds
+@export var hurt_time: float = 0.2
+@export var hurt_speed: Vector2 = Vector2(-5 * GRID, -5 * GRID)
 
 # HUD reference
 var player_hud
@@ -52,6 +52,9 @@ var dashing: float = 0
 var last_animation: String = "idle"
 var jumps_done: int = 1
 var koyote_timer: float = 0
+var hurt_timer: float = 0
+var impulse: Vector2 = Vector2.ZERO
+var impulse_reset: bool = false
 
 # Animations
 var sprite: String = "cat"
@@ -65,6 +68,8 @@ var animations: Dictionary[String, String] = {
 	dash_start = "dash_start",
 	dash_end = "dash_end",
 	double_jump = "double_jump",
+	hurt = "hurt",
+	death = "death",
 }
 
 func get_animation(sprite_name: String, animation: String):
@@ -86,6 +91,7 @@ func input_state(action: String) -> int:
 
 func _physics_process(delta: float):
 	dashing -= delta
+	hurt_timer -= delta
 	var turning = handle_player_input(delta)
 	move_and_slide()
 	update_animation(turning, delta)
@@ -112,6 +118,13 @@ func handle_input(
 ) -> bool:
 	var _velocity: Vector2 = velocity_meter()
 	var turning: bool = false
+	# Impulse
+	if impulse_reset:
+		_velocity = impulse
+	else:
+		_velocity += impulse
+	impulse = Vector2.ZERO
+	impulse_reset = false
 	# Ground controls
 	if is_on_floor():
 		var _acceleration: float = speed * acceleration * delta
@@ -197,6 +210,9 @@ func play_animation(animation_name: String, loop: bool = true, restart: bool = f
 func update_animation(turning: bool, _delta: float):
 	var _velocity: Vector2 = velocity_meter()
 	horizontal_flipper.scale.x = facing
+	if hurt_timer > 0:
+		play_animation("hurt")
+		return
 	if is_on_floor():
 		if velocity.x == 0:
 			play_animation("idle")
@@ -219,15 +235,20 @@ func update_animation(turning: bool, _delta: float):
 		if _velocity.y >= 0:
 			play_animation("jump_end", false)
 
-
-
 # Removes HP from the player and calls the player_hud.gd to update the display
 func player_take_damage():
 	current_hp = clamp(current_hp - 1, 0, max_hp)
 	player_hud.take_damage(1)
+	hurt_timer = hurt_time
+	impulse.x = facing * hurt_speed.x
+	impulse.y = hurt_speed.y
+	impulse_reset = true
 	if current_hp == 0:
-		# Restart the current level
-		get_tree().reload_current_scene()
+		player_death()
+
+func player_death():
+	# Restart the current level
+	get_tree().reload_current_scene()
 
 # Adds HP to the player and calls the player_hud.gd to update the display
 func player_heal():
