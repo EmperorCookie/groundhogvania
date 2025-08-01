@@ -74,3 +74,6 @@ text = "Add Segment"
 layout_mode = 2
 focus_mode = 0
 text = "Remove Segment"
+
+[connection signal="pressed" from="Control/DevButtons/TakeDamageBtn" to="." method="_on_take_damage_btn_pressed"]
+[connection signal="pressed" from="Control/DevButtons/HealBtn" to="." method="_on_heal_btn_pressed"]

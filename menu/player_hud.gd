@@ -145,3 +145,12 @@ func update_timer_display():
 		print("Warning: restart_timer label not found!")
 	
 	print("Current time: " + time_string)  # Keep debug print for now
+
+
+func _on_take_damage_btn_pressed() -> void:
+	var player = get_node("../Player")
+	player.player_take_damage()
+
+func _on_heal_btn_pressed() -> void:
+	var player = get_node("../Player")
+	player.player_heal()
