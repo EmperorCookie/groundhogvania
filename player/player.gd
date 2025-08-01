@@ -37,7 +37,7 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 @export var dash_speed: float = 14 * GRID
 @export var dash_duration: float = 0.3
 @export var hurt_time: float = 0.2
-@export var hurt_speed: Vector2 = Vector2(-5 * GRID, -5 * GRID)
+@export var hurt_speed: Vector2 = Vector2(-6 * GRID, -6 * GRID)
 
 # HUD reference
 var player_hud

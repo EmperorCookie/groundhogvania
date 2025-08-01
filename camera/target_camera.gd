@@ -2,6 +2,7 @@ extends Node2D
 
 # References
 @export var target: Node2D = null
+@export var camera: Camera2D = null
 
 # Params
 @export var spring: float = 10
@@ -55,3 +56,6 @@ func _process(delta: float):
 		else:
 			target_reached = true
 		global_position = final_position
+		# Zoom
+		var final_zoom: float = lerp(camera.zoom.x, 1 / ((target.scale.x + target.scale.y) / 2), apply_spring(spring, delta))
+		camera.zoom = Vector2(final_zoom, final_zoom)
