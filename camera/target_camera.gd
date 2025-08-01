@@ -1,3 +1,5 @@
+class_name TargetCamera
+
 extends Node2D
 
 # References
@@ -9,6 +11,7 @@ extends Node2D
 @export var lead: float = 2
 @export var maximum_distance: float = 116
 @export var offset: Vector2 = Vector2.ZERO
+@export var zoom: float = 1
 
 # State
 var target_position: Vector2 = Vector2.ZERO
@@ -57,5 +60,5 @@ func _process(delta: float):
 			target_reached = true
 		global_position = final_position
 		# Zoom
-		var final_zoom: float = lerp(camera.zoom.x, 1 / ((target.scale.x + target.scale.y) / 2), apply_spring(spring, delta))
+		var final_zoom: float = lerp(camera.zoom.x, zoom / ((target.scale.x + target.scale.y) / 2), apply_spring(spring, delta))
 		camera.zoom = Vector2(final_zoom, final_zoom)

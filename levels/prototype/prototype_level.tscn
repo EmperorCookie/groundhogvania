@@ -27,8 +27,9 @@ disable_nodes = [NodePath("../PreviewCamera")]
 target = NodePath("../PreviewController")
 lead = 0.0
 
-[node name="Player" parent="." instance=ExtResource("3_yc6rk")]
+[node name="Player" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("3_yc6rk")]
 position = Vector2(-468, 395)
+camera = NodePath("../PlayerCamera")
 
 [node name="PlayerCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_nkijq")]
 target = NodePath("../Player")

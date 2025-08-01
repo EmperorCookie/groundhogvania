@@ -5,6 +5,8 @@ extends CharacterBody2D
 # References
 @export var horizontal_flipper: Node2D = null
 @export var animation_player: AnimationPlayer = null
+@export var camera: TargetCamera = null
+@export var color_rect: ColorRect = null
 @onready var player_hud = get_node("../PlayerHud")
 
 # Scale
