@@ -69,6 +69,14 @@ var animations: Dictionary[String, String] = {
 	death = "death",
 }
 
+# Sounds
+@onready var damage_sound: AudioStreamPlayer = $DamageSound 
+@onready var jump_sound: AudioStreamPlayer = $JumpSound
+@onready var dash_sound: AudioStreamPlayer = $DashSound
+@onready var death_sound: AudioStreamPlayer = $DeathSound
+@onready var landing_sound: AudioStreamPlayer = $LandingSound
+@onready var double_jump_sound: AudioStreamPlayer = $DoubleJumpSound
+
 func get_animation(sprite_name: String, animation: String):
 	return sprite_name + "/" + animation
 
@@ -150,10 +158,12 @@ func handle_input(
 					_velocity.x = sign(_velocity.x) * speed
 		# Dash before jump so it works even if pressed on the same frame
 		if dash_action == 2 and can_dash and dashing <= 0:
+			dash_sound.play()
 			_velocity.x = sign(facing if direction.x == 0 else direction.x) * dash_speed
 			dashing = dash_duration
 		# Jump
 		if jump_action == 2:
+			jump_sound.play()
 			_velocity.y = -jump_velocity(default_gravity * weight, jump_height)
 			jumps_done = 1
 		else:
@@ -172,6 +182,7 @@ func handle_input(
 			velocity.y = max(velocity.y - g * 2, TERMINAL_VELOCITY)
 		# Double jump
 		if jump_action == 2 and jumps_done < jump_count:
+			double_jump_sound.play()
 			_velocity.y = -jump_velocity(default_gravity * weight, jump_height_double)
 			jumps_done += 1
 			if double_jump_and_turn and sign(_velocity.x) != sign(direction.x):
@@ -243,6 +254,7 @@ func update_animation(turning: bool, _delta: float):
 func player_take_damage():
 	current_hp = clamp(current_hp - 1, 0, max_hp)
 	player_hud.update_segments(current_hp)
+	damage_sound.play()
 	hurt_timer = hurt_time
 	impulse.x = facing * hurt_speed.x
 	impulse.y = hurt_speed.y
@@ -252,7 +264,9 @@ func player_take_damage():
 
 func player_death():
 	# Restart the current level
-	await get_tree().create_timer(3.0).timeout  # Wait 2 seconds before restarting level
+	await get_tree().create_timer(1.5).timeout  # Wait 1 seconds before playing death sound
+	death_sound.play()
+	await get_tree().create_timer(1.5).timeout  # Wait 1.5 seconds before restarting level
 	get_tree().reload_current_scene()
 
 # Adds HP to the player and calls the player_hud.gd to update the display
