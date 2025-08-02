@@ -81,13 +81,13 @@ var animations: Dictionary[String, String] = {
 func get_animation(sprite_name: String, animation: String):
 	return sprite_name + "/" + animation
 
-func jump_velocity(gravity: float, height: float) -> float:
+static func jump_velocity(gravity: float, height: float) -> float:
 	return sqrt(2) * sqrt(gravity) * sqrt(height)
 
-func velocity_meter() -> Vector2:
-	return (velocity if is_on_floor() else get_real_velocity()) / METER_PX
+static func velocity_meter(character: CharacterBody2D) -> Vector2:
+	return (character.velocity if character.is_on_floor() else character.get_real_velocity()) / METER_PX
 
-func input_state(action: String) -> int:
+static func input_state(action: String) -> int:
 	return (
 		2 if Input.is_action_just_pressed(action)
 		else 1 if Input.is_action_pressed(action)
@@ -127,7 +127,7 @@ func handle_input(
 	dash_action: int,
 	delta: float,
 ) -> bool:
-	var _velocity: Vector2 = velocity_meter()
+	var _velocity: Vector2 = velocity_meter(self)
 	var turning: bool = false
 	# Impulse
 	if impulse_reset:
@@ -227,7 +227,7 @@ func play_animation(animation_name: String, loop: bool = true, restart: bool = f
 		last_animation = animation
 
 func update_animation(turning: bool, _delta: float):
-	var _velocity: Vector2 = velocity_meter()
+	var _velocity: Vector2 = velocity_meter(self)
 	horizontal_flipper.scale.x = facing
 	if hurt_timer > 0:
 		play_animation("hurt")
@@ -259,6 +259,8 @@ func update_animation(turning: bool, _delta: float):
 
 # Removes HP from the player and calls the player_hud.gd to update the display
 func player_take_damage():
+	if current_hp <= 0 or hurt_timer > 0:
+		return
 	current_hp = clamp(current_hp - 1, 0, max_hp)
 	player_hud.update_segments(current_hp)
 	damage_sound.play()

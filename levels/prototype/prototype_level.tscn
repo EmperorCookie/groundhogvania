@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://byq04x76yogq2"]
+[gd_scene load_steps=12 format=4 uid="uid://byq04x76yogq2"]
 
 [ext_resource type="TileSet" uid="uid://duvwwdne6hncq" path="res://assets/blocking_tileset.tres" id="1_7xbuc"]
 [ext_resource type="PackedScene" uid="uid://doaui24fomcxa" path="res://camera/target_camera.tscn" id="3_nkijq"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://e1l73ewb8ssq" path="res://items/item_add_time.tscn" id="8_jrhx3"]
 [ext_resource type="PackedScene" uid="uid://rhy5iqavhl6k" path="res://items/item_pause_time.tscn" id="9_2dl6f"]
 [ext_resource type="PackedScene" uid="uid://cvd1n27hndunl" path="res://powerups/power_up_double_jump.tscn" id="10_1fcek"]
+[ext_resource type="PackedScene" uid="uid://b0simqtpgrgef" path="res://enemies/bee/bee.tscn" id="11_o8nxb"]
 
 [node name="PrototypeLevel" type="Node2D"]
 
@@ -52,3 +53,7 @@ pause_amount = 5.0
 
 [node name="PowerUpDoubleJump" parent="." instance=ExtResource("10_1fcek")]
 position = Vector2(563, 1015)
+
+[node name="Bee" parent="." node_paths=PackedStringArray("player") instance=ExtResource("11_o8nxb")]
+position = Vector2(-92, 340)
+player = NodePath("../Player")

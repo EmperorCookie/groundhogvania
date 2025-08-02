@@ -1,6 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://b0simqtpgrgef"]
+[gd_scene load_steps=10 format=3 uid="uid://b0simqtpgrgef"]
 
 [ext_resource type="Texture2D" uid="uid://cuiwnumvxadxs" path="res://assets/bee/S_Walk.png" id="1_gak08"]
+[ext_resource type="Script" uid="uid://borceaifva6tq" path="res://enemies/bee/bee.gd" id="1_tfew5"]
+[ext_resource type="Texture2D" uid="uid://bnok5cqfiue7x" path="res://assets/bee/S_Death.png" id="3_atr2t"]
 
 [sub_resource type="Animation" id="Animation_atr2t"]
 length = 0.001
@@ -16,6 +18,18 @@ tracks/0/keys = {
 "update": 1,
 "values": [2]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_gak08")]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_edrlf"]
 _data = {
@@ -23,11 +37,37 @@ _data = {
 }
 
 [sub_resource type="Animation" id="Animation_tfew5"]
+length = 0.400007
+step = 0.0666667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.2, 0.266667, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("3_atr2t")]
+}
 
 [sub_resource type="Animation" id="Animation_gak08"]
 length = 0.400007
 loop_mode = 1
-step = 0.0166667
+step = 0.0666667
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -50,7 +90,10 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_gak08"]
 radius = 5.0
 
-[node name="Bee" type="CharacterBody2D"]
+[node name="Bee" type="CharacterBody2D" node_paths=PackedStringArray("animation_player", "horizontal_flipper")]
+script = ExtResource("1_tfew5")
+animation_player = NodePath("HorizontalFlipper/Sprite2D/AnimationPlayer")
+horizontal_flipper = NodePath("HorizontalFlipper")
 
 [node name="HorizontalFlipper" type="Node2D" parent="."]
 
