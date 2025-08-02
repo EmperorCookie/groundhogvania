@@ -52,6 +52,7 @@ var koyote_timer: float = 0
 var hurt_timer: float = 0
 var impulse: Vector2 = Vector2.ZERO
 var impulse_reset: bool = false
+var was_on_floor: bool = false
 
 # Animations
 var sprite: String = "cat"
@@ -102,6 +103,7 @@ func _physics_process(delta: float):
 		turning = handle_input(Vector2.ZERO, 0, 0, delta)
 	else:
 		turning = handle_player_input(delta)
+	was_on_floor = is_on_floor()
 	move_and_slide()
 	update_animation(turning, delta)
 
@@ -136,6 +138,8 @@ func handle_input(
 	impulse_reset = false
 	# Ground controls
 	if is_on_floor():
+		if not was_on_floor:
+			landing_sound.play()
 		var _acceleration: float = speed * acceleration * delta
 		# Decelerate
 		if direction.x == 0:
@@ -182,7 +186,10 @@ func handle_input(
 			velocity.y = max(velocity.y - g * 2, TERMINAL_VELOCITY)
 		# Double jump
 		if jump_action == 2 and jumps_done < jump_count:
-			double_jump_sound.play()
+			if jumps_done == 0:
+				jump_sound.play()
+			else:
+				double_jump_sound.play()
 			_velocity.y = -jump_velocity(default_gravity * weight, jump_height_double)
 			jumps_done += 1
 			if double_jump_and_turn and sign(_velocity.x) != sign(direction.x):
