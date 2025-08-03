@@ -7,6 +7,10 @@ var timer_paused: bool = false
 var pause_time_remaining: float = 0.0
 @onready var restart_timer_label: Label = $Control/BoxContainer/restart_timer
 
+# Day counter variables
+var current_day: int = 1
+@onready var day_counter_label: Label = $Control/DayCounter
+
 # HP system variables
 @onready var hp_container: HBoxContainer = $Control/HPContainer
 @onready var hp_segment_1: ColorRect = $Control/HPContainer/HP1
@@ -32,6 +36,9 @@ func _ready():
 	# Display initial time on label
 	update_timer_display()
 	
+	# Initialize day counter display
+	update_day_display()
+	
 	# Initialize HP display from player
 	call_deferred("initialize_hp_from_player")
 
@@ -44,14 +51,16 @@ func initialize_from_player():
 	if player:
 		# Pull values from player
 		seconds = player.starting_time
-		print("Initialized HUD from player - Time: ", seconds, "s")
+		current_day = player.days  # Sync day counter with player
+		print("Initialized HUD from player - Time: ", seconds, "s, Day: ", current_day)
 		var current_hp = player.current_hp
 		print("Getting HP from player: ", current_hp)
 		update_segments(current_hp)
 	else:
 		# Fallback values if player not found
 		seconds = 45
-		print("Player not found, using fallback time: ", seconds, "s")
+		current_day = 1  # Fallback day value
+		print("Player not found, using fallback time: ", seconds, "s, Day: ", current_day)
 		update_segments(1)
 		print("Player not found, using fallback of 1 hp")
 
@@ -145,12 +154,16 @@ func _on_timer_timeout():
 	if seconds > 1:
 		seconds -= 1
 	else:
+		# Timer hit 0:01 or below, reset the player immediately
+		_stop_music()  # Stop music immediately
 		print("Timer hit 0:01, resetting player...")
 		# Get the player node and call reset method
 		var player = get_node("../Player")
 		if player and player.has_method("player_reset"):
 			player.player_reset()
 			print("Timer hit 0:01 - Player reset!")
+		
+		# Note: Day counter will be updated by player_reset() function
 	
 	update_timer_display()
 
@@ -182,6 +195,15 @@ func update_timer_display():
 	
 	print("Current time: " + time_string)  # Keep debug print for now
 
+
+func update_day_display():
+	# Update the day counter label
+	if day_counter_label:
+		day_counter_label.text = "Day " + str(current_day)
+	else:
+		print("Warning: day_counter label not found!")
+	
+	print("Current day: " + str(current_day))
 
 
 func _on_take_damage_btn_pressed() -> void:

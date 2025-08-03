@@ -323,6 +323,10 @@ func player_reset():
 	days += 1
 	player_hud._stop_music()
 	
+	# Update HUD day counter to match player's day count
+	player_hud.current_day = days
+	player_hud.update_day_display()
+	
 	# Reset death fade effect
 	if color_rect:
 		color_rect.color.a = 0.0  # Make it fully transparent

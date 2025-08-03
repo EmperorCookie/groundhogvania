@@ -44,6 +44,19 @@ grow_horizontal = 2
 layout_mode = 2
 text = "1:00"
 
+[node name="DayCounter" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -120.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 30.0
+grow_horizontal = 0
+text = "Day 1"
+horizontal_alignment = 2
+
 [node name="DevButtons" type="VBoxContainer" parent="Control"]
 visible = false
 layout_mode = 1
