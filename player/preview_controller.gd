@@ -53,8 +53,9 @@ func start_level():
 
 func set_node_status(node: Node, process_mode: ProcessMode, _visible: bool):
 	for child in node.get_children():
-		child.process_mode = process_mode
-		if child is CanvasItem or child is CanvasLayer:
-			child.visible = _visible
-		if _visible and child is Camera2D:
-			child.make_current()
+		set_node_status(child, process_mode, _visible)
+	node.process_mode = process_mode
+	if node is CanvasItem or node is CanvasLayer:
+		node.visible = _visible
+	if _visible and node is Camera2D:
+		node.make_current()
