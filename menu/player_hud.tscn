@@ -75,34 +75,6 @@ text = "Level Complete!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DevButtons" type="VBoxContainer" parent="Control"]
-visible = false
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -160.0
-offset_top = -76.0
-offset_right = -10.0
-offset_bottom = -10.0
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="TakeDamageBtn" type="Button" parent="Control/DevButtons"]
-layout_mode = 2
-focus_mode = 0
-text = "Take Damage"
-
-[node name="HealBtn" type="Button" parent="Control/DevButtons"]
-layout_mode = 2
-focus_mode = 0
-text = "Heal"
-
 [node name="LevelMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_kdluk")
 volume_db = -12.0
-
-[connection signal="pressed" from="Control/DevButtons/TakeDamageBtn" to="." method="_on_take_damage_btn_pressed"]
-[connection signal="pressed" from="Control/DevButtons/HealBtn" to="." method="_on_heal_btn_pressed"]

@@ -209,17 +209,6 @@ func update_day_display():
 	print("Current day: " + str(current_day))
 
 
-func _on_take_damage_btn_pressed() -> void:
-	var player = get_node("../Player")
-	player.player_take_damage()
-
-
-
-
-func _on_heal_btn_pressed() -> void:
-	var player = get_node("../Player")
-	player.player_heal()
-
 
 func _play_music() -> void:
 	# Start level music when the player is ready
