@@ -11,10 +11,7 @@ extends Node2D
 @onready var player_hud = get_node("../PlayerHud")
 
 func _ready():
-	for node in enable_nodes:
-		node.process_mode = Node.PROCESS_MODE_DISABLED
-		if node is CanvasItem or node is CanvasLayer:
-			node.visible = false
+	start_preview()
 
 func _physics_process(delta: float):
 	var up_action = "player_up"
@@ -41,14 +38,24 @@ func input_state(action: String) -> int:
 		else 0
 	)
 
+func start_preview():
+	for node in enable_nodes:
+		set_node_status(node, Node.PROCESS_MODE_DISABLED, false)
+	for node in disable_nodes:
+		set_node_status(node, Node.PROCESS_MODE_INHERIT, true)
+	
+
 func start_level():
 	for node in disable_nodes:
-		for child in node.get_children():
-			child.queue_free()
-		node.queue_free()
+		set_node_status(node, Node.PROCESS_MODE_DISABLED, false)
 	for node in enable_nodes:
-		node.process_mode = Node.PROCESS_MODE_INHERIT
-		if node is CanvasItem or node is CanvasLayer:
-			node.visible = true
+		set_node_status(node, Node.PROCESS_MODE_INHERIT, true)
 	player_hud._play_music()
-	queue_free()
+
+func set_node_status(node: Node, process_mode: ProcessMode, _visible: bool):
+	for child in node.get_children():
+		child.process_mode = process_mode
+		if child is CanvasItem or child is CanvasLayer:
+			child.visible = _visible
+		if _visible and child is Camera2D:
+			child.make_current()
