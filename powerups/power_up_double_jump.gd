@@ -13,6 +13,7 @@ func _on_body_entered(body: Node2D) -> void:
 				body.increase_jump_count(1)
 			elif "jump_count" in body:
 				body.jump_count += 1
+				body.player_reset()
 			else:
 				print("Warning: Could not find jump_count property on player")
 			
@@ -23,5 +24,4 @@ func _on_body_entered(body: Node2D) -> void:
 			
 			# Wait for sound to finish, then remove
 			await collect_sound.finished
-			body.player_reset()
 			queue_free()

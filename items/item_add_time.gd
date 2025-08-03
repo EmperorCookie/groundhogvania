@@ -30,9 +30,7 @@ func _on_body_entered(body: Node2D) -> void:
 			
 			# Add permanent time to the players clock
 			body.starting_time += 30
-			var player_hud = get_node("../PlayerHud")
-			player_hud.seconds += 30
-			
+			body.player_reset()
 			# Hide the visual but keep the node alive for sound
 			visible = false
 			set_collision_mask_value(1, false)

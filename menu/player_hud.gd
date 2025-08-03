@@ -145,8 +145,6 @@ func _on_timer_timeout():
 	if seconds > 1:
 		seconds -= 1
 	else:
-		# Timer hit 0:01 or below, reset the player immediately
-		_stop_music()  # Stop music immediately
 		print("Timer hit 0:01, resetting player...")
 		# Get the player node and call reset method
 		var player = get_node("../Player")

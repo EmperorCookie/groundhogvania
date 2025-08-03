@@ -11,6 +11,7 @@ func _on_body_entered(body: Node2D) -> void:
 			# Give the player the ability to dash
 			if "can_dash" in body:
 				body.can_dash = true
+				body.player_reset()
 			else:
 				print("Warning: Could not find can_dash property on player")
 			
@@ -21,5 +22,4 @@ func _on_body_entered(body: Node2D) -> void:
 			
 			# Wait for sound to finish, then remove
 			await collect_sound.finished
-			body.player_reset()
 			queue_free()

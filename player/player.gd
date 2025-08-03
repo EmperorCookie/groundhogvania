@@ -321,6 +321,7 @@ func player_reset():
 	impulse_reset = false
 	jumps_done = 0
 	days += 1
+	player_hud._stop_music()
 	
 	# Reset death fade effect
 	if color_rect:
