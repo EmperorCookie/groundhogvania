@@ -11,6 +11,9 @@ var pause_time_remaining: float = 0.0
 var current_day: int = 1
 @onready var day_counter_label: Label = $Control/DayCounter
 
+# Level complete variables
+@onready var level_complete_label: Label = $Control/LevelCompleteLabel
+
 # HP system variables
 @onready var hp_container: HBoxContainer = $Control/HPContainer
 @onready var hp_segment_1: ColorRect = $Control/HPContainer/HP1
@@ -235,3 +238,53 @@ func _stop_music() -> void:
 	if level_music and level_music.playing:
 		# Stop music immediately
 		level_music.stop()
+
+func level_complete() -> void:
+	# Stop the timer and music immediately to prevent any resets
+	timer_paused = true
+	if timer:
+		timer.stop()  # Completely stop the timer to be extra safe
+	_stop_music()
+	
+	print("Level Complete! Timer stopped to prevent reset.")
+	
+	# Make sure the level complete label exists
+	if not level_complete_label:
+		print("Error: Level complete label not found!")
+		return
+	
+	# Show and animate the "Level Complete!" text
+	level_complete_label.visible = true
+	level_complete_label.modulate = Color.TRANSPARENT
+	level_complete_label.scale = Vector2(0.5, 0.5)
+	
+	# Create fancy animation sequence
+	var tween = create_tween()
+	tween.set_parallel(true)  # Allow multiple animations at once
+	
+	# Fade in and scale up
+	tween.tween_property(level_complete_label, "modulate", Color.WHITE, 0.5)
+	tween.tween_property(level_complete_label, "scale", Vector2(1.2, 1.2), 0.5)
+	tween.set_ease(Tween.EASE_OUT)
+	tween.set_trans(Tween.TRANS_BACK)
+	
+	# Wait a moment, then start flashing
+	await tween.finished
+	
+	# Flash animation
+	var flash_tween = create_tween()
+	flash_tween.set_loops(6)  # Flash 6 times
+	flash_tween.tween_property(level_complete_label, "modulate", Color.YELLOW, 0.3)
+	flash_tween.tween_property(level_complete_label, "modulate", Color.WHITE, 0.3)
+	
+	# Wait for flashing to finish
+	await flash_tween.finished
+	
+	# Final fade out
+	var fade_out_tween = create_tween()
+	fade_out_tween.tween_property(level_complete_label, "modulate", Color.TRANSPARENT, 1.0)
+	await fade_out_tween.finished
+	
+	# Return to main menu (you'll need to replace this path)
+	print("Level Complete! Returning to main menu...")
+	get_tree().change_scene_to_file("res://menu/main_menu.tscn")
