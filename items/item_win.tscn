@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://umiexexori12"]
+
+[ext_resource type="Script" uid="uid://cfmnqxfeidg4x" path="res://items/item_win.gd" id="1_43opy"]
+[ext_resource type="Texture2D" uid="uid://gtqvvsh2f2in" path="res://assets/win_item.tres" id="1_vfw0q"]
+[ext_resource type="AudioStream" uid="uid://b05k2j5qchiwt" path="res://assets/sounds/83_Power_up_item.wav" id="3_dbmle"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kahma"]
+
+[node name="ItemWin" type="Area2D"]
+script = ExtResource("1_43opy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_kahma")
+
+[node name="Sprite2D" type="Sprite2D" parent="CollisionShape2D"]
+texture = ExtResource("1_vfw0q")
+
+[node name="CollectSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_dbmle")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
