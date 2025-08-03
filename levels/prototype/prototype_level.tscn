@@ -48,10 +48,6 @@ position = Vector2(-568, 248)
 [node name="ItemAddTime" parent="." instance=ExtResource("8_jrhx3")]
 position = Vector2(288, 224)
 
-[node name="ItemPauseTime" parent="." instance=ExtResource("9_2dl6f")]
-position = Vector2(992, 64)
-pause_amount = 5.0
-
 [node name="PowerUpDoubleJump" parent="." instance=ExtResource("10_1fcek")]
 position = Vector2(520, 1000)
 
