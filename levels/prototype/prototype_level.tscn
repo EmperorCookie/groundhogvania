@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=4 uid="uid://byq04x76yogq2"]
+[gd_scene load_steps=14 format=4 uid="uid://byq04x76yogq2"]
 
 [ext_resource type="TileSet" uid="uid://duvwwdne6hncq" path="res://assets/blocking_tileset.tres" id="1_7xbuc"]
 [ext_resource type="PackedScene" uid="uid://doaui24fomcxa" path="res://camera/target_camera.tscn" id="3_nkijq"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cvd1n27hndunl" path="res://powerups/power_up_double_jump.tscn" id="10_1fcek"]
 [ext_resource type="PackedScene" uid="uid://b0simqtpgrgef" path="res://enemies/bee/bee.tscn" id="11_o8nxb"]
 [ext_resource type="Script" uid="uid://4vhrxqm3uara" path="res://levels/prototype/enemy_manager.gd" id="11_y3vmf"]
+[ext_resource type="PackedScene" uid="uid://qrvckb2va54f" path="res://powerups/power_up_dash.tscn" id="13_jp1iy"]
 
 [node name="PrototypeLevel" type="Node2D"]
 
@@ -64,3 +65,6 @@ player = NodePath("../../Player")
 [node name="Bee2" parent="EnemyManager" node_paths=PackedStringArray("player") instance=ExtResource("11_o8nxb")]
 position = Vector2(1313, 35)
 player = NodePath("../../Player")
+
+[node name="PowerUpDoubleJump" parent="EnemyManager" instance=ExtResource("13_jp1iy")]
+position = Vector2(2143, -15)

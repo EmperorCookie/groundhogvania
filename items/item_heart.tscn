@@ -1,9 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://cmctud1jb30gq"]
 
 [ext_resource type="Script" uid="uid://bwdijsok6idsc" path="res://items/item_heart.gd" id="1_vpwwv"]
-[ext_resource type="Texture2D" uid="uid://m027b0q87l8d" path="res://assets/powerups/power_up_hp.png" id="2_vpwwv"]
+[ext_resource type="Texture2D" uid="uid://djm8otmj387o4" path="res://assets/heart_item.tres" id="2_vpwwv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kahma"]
+radius = 8.0
 
 [node name="ItemHeart" type="Area2D"]
 script = ExtResource("1_vpwwv")

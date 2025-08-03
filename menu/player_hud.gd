@@ -191,7 +191,7 @@ func _on_heal_btn_pressed() -> void:
 func _play_music() -> void:
 	# Start level music when the player is ready
 	if level_music and not level_music.playing:
-		level_music.volume_db = 0.0  # Reset volume to normal level
+		level_music.volume_db = -12.0  # Reset volume to normal level
 		level_music.play()
 		
 func _stop_music() -> void:
