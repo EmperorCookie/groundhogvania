@@ -60,3 +60,8 @@ player_dash={
 [physics]
 
 2d/default_gravity=9.81
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
