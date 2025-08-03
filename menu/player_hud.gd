@@ -142,14 +142,17 @@ func _on_timer_timeout():
 		return
 	
 	# Normal timer countdown
-	if seconds > 0:
+	if seconds > 1:
 		seconds -= 1
 	else:
-		# Timer hit 0:00, reset the player
+		# Timer hit 0:01 or below, reset the player immediately
+		_stop_music()  # Stop music immediately
+		print("Timer hit 0:01, resetting player...")
+		# Get the player node and call reset method
 		var player = get_node("../Player")
 		if player and player.has_method("player_reset"):
 			player.player_reset()
-			print("Timer hit 0:00 - Player reset!")
+			print("Timer hit 0:01 - Player reset!")
 	
 	update_timer_display()
 
