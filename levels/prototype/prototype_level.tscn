@@ -36,6 +36,7 @@ position = Vector2(-468, 395)
 camera = NodePath("../PlayerCamera")
 jump_count = 1
 can_dash = false
+max_hp = 1
 
 [node name="PlayerCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_nkijq")]
 target = NodePath("../Player")

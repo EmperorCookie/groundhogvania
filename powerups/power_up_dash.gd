@@ -21,4 +21,5 @@ func _on_body_entered(body: Node2D) -> void:
 			
 			# Wait for sound to finish, then remove
 			await collect_sound.finished
+			body.player_reset()
 			queue_free()

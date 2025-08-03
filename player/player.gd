@@ -314,7 +314,7 @@ func player_reset():
 	# Reset player state
 	global_position = spawn_position
 	velocity = Vector2.ZERO
-	current_hp = clamp(current_hp, 1, max_hp)
+	current_hp = clamp(max_hp, 1, max_hp)
 	hurt_timer = 0
 	dashing = 0
 	impulse = Vector2.ZERO
@@ -337,5 +337,6 @@ func player_reset():
 # Adds HP to the player and calls the player_hud.gd to update the display
 func player_heal():
 	current_hp = clamp(current_hp + 1, 0, max_hp)
+	max_hp += 1
 	heal_sound.play()
 	player_hud.update_segments(current_hp)
