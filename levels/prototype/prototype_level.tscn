@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://byq04x76yogq2"]
+[gd_scene load_steps=13 format=4 uid="uid://byq04x76yogq2"]
 
 [ext_resource type="TileSet" uid="uid://duvwwdne6hncq" path="res://assets/blocking_tileset.tres" id="1_7xbuc"]
 [ext_resource type="PackedScene" uid="uid://doaui24fomcxa" path="res://camera/target_camera.tscn" id="3_nkijq"]
@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://bu8hcbjroii8c" path="res://player/preview_controller.gd" id="6_t82ty"]
 [ext_resource type="PackedScene" uid="uid://cmctud1jb30gq" path="res://items/item_heart.tscn" id="7_gl4gk"]
 [ext_resource type="PackedScene" uid="uid://e1l73ewb8ssq" path="res://items/item_add_time.tscn" id="8_jrhx3"]
-[ext_resource type="PackedScene" uid="uid://rhy5iqavhl6k" path="res://items/item_pause_time.tscn" id="9_2dl6f"]
 [ext_resource type="PackedScene" uid="uid://cvd1n27hndunl" path="res://powerups/power_up_double_jump.tscn" id="10_1fcek"]
 [ext_resource type="PackedScene" uid="uid://b0simqtpgrgef" path="res://enemies/bee/bee.tscn" id="11_o8nxb"]
 [ext_resource type="Script" uid="uid://4vhrxqm3uara" path="res://levels/prototype/enemy_manager.gd" id="11_y3vmf"]
@@ -36,6 +35,7 @@ lead = 0.0
 position = Vector2(-468, 395)
 camera = NodePath("../PlayerCamera")
 jump_count = 1
+can_dash = false
 
 [node name="PlayerCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_nkijq")]
 target = NodePath("../Player")
@@ -47,10 +47,6 @@ position = Vector2(48, 325)
 
 [node name="ItemAddTime" parent="." instance=ExtResource("8_jrhx3")]
 position = Vector2(380, 228)
-
-[node name="ItemPauseTime" parent="." instance=ExtResource("9_2dl6f")]
-position = Vector2(1000, 69)
-pause_amount = 5.0
 
 [node name="PowerUpDoubleJump" parent="." instance=ExtResource("10_1fcek")]
 position = Vector2(563, 1015)

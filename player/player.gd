@@ -27,6 +27,7 @@ const TERMINAL_VELOCITY: float = 10 * GRID
 @export var can_dash: bool = true
 
 # Stats
+var days: int = 1
 @export var max_hp: int = 2
 @export var current_hp: int = 1
 @export var current_time: int = 45 # In seconds
@@ -305,9 +306,11 @@ func player_death():
 	# Respawn the player at their starting position
 	await get_tree().create_timer(1.5).timeout  # Wait 1.5 seconds before playing death sound
 	death_sound.play()
-	player_hud._stop_music()
+	player_hud._fade_music()
 	await get_tree().create_timer(1.5).timeout  # Wait 1.5 seconds before respawning
+	player_reset()
 
+func player_reset():
 	# Reset player state
 	global_position = spawn_position
 	velocity = Vector2.ZERO
@@ -317,6 +320,8 @@ func player_death():
 	impulse = Vector2.ZERO
 	impulse_reset = false
 	jumps_done = 0
+	days += 1
+	player_hud._stop_music()
 	
 	# Reset death fade effect
 	if color_rect:

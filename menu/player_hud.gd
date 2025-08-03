@@ -144,6 +144,13 @@ func _on_timer_timeout():
 	# Normal timer countdown
 	if seconds > 0:
 		seconds -= 1
+	else:
+		# Timer hit 0:00, reset the player
+		var player = get_node("../Player")
+		if player and player.has_method("player_reset"):
+			player.player_reset()
+			print("Timer hit 0:00 - Player reset!")
+	
 	update_timer_display()
 
 func pause_timer(pause_duration: float):
@@ -194,9 +201,14 @@ func _play_music() -> void:
 		level_music.volume_db = -12.0  # Reset volume to normal level
 		level_music.play()
 		
-func _stop_music() -> void:
+func _fade_music() -> void:
 	if level_music and level_music.playing:
 		# Create a tween to fade out the music
 		var tween = create_tween()
 		tween.tween_property(level_music, "volume_db", -80.0, 1.5)  # Fade to silence over 1.5 seconds
 		tween.tween_callback(level_music.stop)  # Stop the music after fade completes
+
+func _stop_music() -> void:
+	if level_music and level_music.playing:
+		# Stop music immediately
+		level_music.stop()
