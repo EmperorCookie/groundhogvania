@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://5yuhe55teig6"]
+[gd_scene load_steps=34 format=3 uid="uid://5yuhe55teig6"]
 
 [ext_resource type="Script" uid="uid://deghlt3lo76m" path="res://player/player.gd" id="1_boad6"]
 [ext_resource type="Texture2D" uid="uid://db7l8sq77wghu" path="res://assets/cat/Idle.png" id="1_oul6g"]
@@ -14,6 +14,10 @@
 [ext_resource type="AudioStream" uid="uid://bxqh7jq7315b3" path="res://assets/sounds/47_Landing_03.wav" id="12_32hag"]
 [ext_resource type="AudioStream" uid="uid://cj600ttkajuu4" path="res://assets/sounds/68_Die_01.wav" id="13_tqiix"]
 [ext_resource type="AudioStream" uid="uid://defwyh32m7eo" path="res://assets/sounds/66_Dash_evade_02.wav" id="14_e7oew"]
+[ext_resource type="AudioStream" uid="uid://13n3pu6otg3s" path="res://assets/sounds/19_Slide_01.wav" id="15_32hag"]
+[ext_resource type="AudioStream" uid="uid://b754vhu3ku3yq" path="res://assets/sounds/07_Step_rock_01.wav" id="16_tqiix"]
+[ext_resource type="AudioStream" uid="uid://brapxpx6abuf2" path="res://assets/sounds/80_Power_up_heal.wav" id="17_tqiix"]
+[ext_resource type="AudioStream" uid="uid://bhip02p43wsjq" path="res://assets/sounds/Furious Freak.mp3" id="18_e7oew"]
 
 [sub_resource type="Animation" id="Animation_boad6"]
 length = 0.001
@@ -243,7 +247,7 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_tqiix"]
 resource_name = "death"
-length = 2.00002
+length = 2.0
 step = 0.2
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -816,9 +820,9 @@ color = Color(0, 0, 0, 0)
 [node name="HorizontalFlipper" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="HorizontalFlipper"]
-texture = ExtResource("2_rgyib")
-offset = Vector2(0, -32)
-hframes = 2
+texture = ExtResource("3_yw30f")
+offset = Vector2(5, -24)
+hframes = 4
 frame = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="HorizontalFlipper/Sprite2D"]
@@ -849,3 +853,15 @@ stream = ExtResource("13_tqiix")
 
 [node name="DashSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("14_e7oew")
+
+[node name="SlideSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("15_32hag")
+
+[node name="StepSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_tqiix")
+
+[node name="HealSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("17_tqiix")
+
+[node name="LevelMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("18_e7oew")

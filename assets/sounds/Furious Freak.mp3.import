@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bhip02p43wsjq"
+path="res://.godot/imported/Furious Freak.mp3-21006dd23d879f41229f9270bea716f2.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Furious Freak.mp3"
+dest_files=["res://.godot/imported/Furious Freak.mp3-21006dd23d879f41229f9270bea716f2.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

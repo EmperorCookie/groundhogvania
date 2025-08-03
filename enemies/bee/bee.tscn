@@ -1,11 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://b0simqtpgrgef"]
+[gd_scene load_steps=11 format=3 uid="uid://b0simqtpgrgef"]
 
 [ext_resource type="Texture2D" uid="uid://cuiwnumvxadxs" path="res://assets/bee/S_Walk.png" id="1_gak08"]
 [ext_resource type="Script" uid="uid://borceaifva6tq" path="res://enemies/bee/bee.gd" id="1_tfew5"]
 [ext_resource type="Texture2D" uid="uid://bnok5cqfiue7x" path="res://assets/bee/S_Death.png" id="3_atr2t"]
+[ext_resource type="AudioStream" uid="uid://cyog0e1qdxe0e" path="res://assets/sounds/63_Get_hit_02.wav" id="4_edrlf"]
 
 [sub_resource type="Animation" id="Animation_atr2t"]
 length = 0.001
+loop_mode = 2
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -88,7 +90,7 @@ _data = {
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gak08"]
-radius = 5.0
+radius = 7.0
 
 [node name="Bee" type="CharacterBody2D" node_paths=PackedStringArray("animation_player", "horizontal_flipper")]
 script = ExtResource("1_tfew5")
@@ -112,3 +114,6 @@ libraries = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_gak08")
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_edrlf")

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://25jvu1t7w5ho"]
+[gd_scene load_steps=3 format=3 uid="uid://25jvu1t7w5ho"]
 
 [ext_resource type="Script" uid="uid://2ak23c2yneox" path="res://menu/player_hud.gd" id="1_jsqgb"]
+[ext_resource type="AudioStream" uid="uid://bhip02p43wsjq" path="res://assets/sounds/Furious Freak.mp3" id="2_kdluk"]
 
 [node name="PlayerHud" type="CanvasLayer"]
 script = ExtResource("1_jsqgb")
@@ -66,6 +67,10 @@ text = "Take Damage"
 layout_mode = 2
 focus_mode = 0
 text = "Heal"
+
+[node name="LevelMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_kdluk")
+volume_db = -1.0
 
 [connection signal="pressed" from="Control/DevButtons/TakeDamageBtn" to="." method="_on_take_damage_btn_pressed"]
 [connection signal="pressed" from="Control/DevButtons/HealBtn" to="." method="_on_heal_btn_pressed"]

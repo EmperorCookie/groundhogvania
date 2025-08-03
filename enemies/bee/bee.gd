@@ -14,6 +14,9 @@ extends CharacterBody2D
 @export var acceleration = 4
 @export var bounce_speed = 12 * Player.GRID
 
+# Sounds
+@onready var death_sound: AudioStreamPlayer = $DeathSound
+
 # Animations
 var animations: Dictionary[String, String] = {
 	fly = "bee/fly",
@@ -63,6 +66,7 @@ func _physics_process(delta: float):
 				collider.impulse.y = -bounce_speed
 				collider.impulse.x = _player_velocity.x
 				neutralized = true
+				death_sound.play()
 				animation_player.play(animations["death"])
 			elif not neutralized:
 				collider.facing = 1 if position.x - collider.position.x >= 0 else -1

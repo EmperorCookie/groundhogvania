@@ -7,6 +7,9 @@ extends Node2D
 # Stats
 @export var speed: float = 1000
 
+# HUD
+@onready var player_hud = get_node("../PlayerHud")
+
 func _ready():
 	for node in enable_nodes:
 		node.process_mode = Node.PROCESS_MODE_DISABLED
@@ -47,4 +50,5 @@ func start_level():
 		node.process_mode = Node.PROCESS_MODE_INHERIT
 		if node is CanvasItem or node is CanvasLayer:
 			node.visible = true
+	player_hud._play_music()
 	queue_free()

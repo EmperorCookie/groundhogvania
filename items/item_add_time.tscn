@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://e1l73ewb8ssq"]
+[gd_scene load_steps=5 format=3 uid="uid://e1l73ewb8ssq"]
 
 [ext_resource type="Script" uid="uid://b4d86our1nssu" path="res://items/item_add_time.gd" id="1_2ok17"]
 [ext_resource type="Texture2D" uid="uid://cwaql4n8g6dap" path="res://assets/items/item_add_time.png" id="2_2ok17"]
+[ext_resource type="AudioStream" uid="uid://csio76ipw8wer" path="res://assets/sounds/81_Power_up_other.wav" id="3_ifyj2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kahma"]
 
@@ -13,5 +14,8 @@ shape = SubResource("CircleShape2D_kahma")
 
 [node name="Sprite2D" type="Sprite2D" parent="CollisionShape2D"]
 texture = ExtResource("2_2ok17")
+
+[node name="CollectSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ifyj2")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

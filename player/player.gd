@@ -8,6 +8,7 @@ extends CharacterBody2D
 @export var camera: TargetCamera = null
 @export var color_rect: ColorRect = null
 @onready var player_hud = get_node("../PlayerHud")
+@onready var enemy_manager = get_node("../EnemyManager")
 
 # Scale
 const CHARACTER_HEIGHT_PX: int = 12
@@ -53,6 +54,7 @@ var hurt_timer: float = 0
 var impulse: Vector2 = Vector2.ZERO
 var impulse_reset: bool = false
 var was_on_floor: bool = false
+var spawn_position: Vector2
 
 # Animations
 var sprite: String = "cat"
@@ -77,6 +79,13 @@ var animations: Dictionary[String, String] = {
 @onready var death_sound: AudioStreamPlayer = $DeathSound
 @onready var landing_sound: AudioStreamPlayer = $LandingSound
 @onready var double_jump_sound: AudioStreamPlayer = $DoubleJumpSound
+@onready var step_sound: AudioStreamPlayer = $StepSound
+@onready var slide_sound: AudioStreamPlayer = $SlideSound
+@onready var heal_sound: AudioStreamPlayer = $HealSound
+
+func _ready():
+	# Store the initial spawn position
+	spawn_position = global_position
 
 func get_animation(sprite_name: String, animation: String):
 	return sprite_name + "/" + animation
@@ -238,17 +247,38 @@ func update_animation(turning: bool, _delta: float):
 	if is_on_floor():
 		if velocity.x == 0:
 			play_animation("idle")
+			# Stop step sound when not moving
+			if step_sound.playing:
+				step_sound.stop()
 		else:
 			if dashing > 0:
 				play_animation("dash_start", false)
+				# Stop step sound during dash
+				if step_sound.playing:
+					step_sound.stop()
 			elif last_animation == "dash_start":
 				play_animation("dash_end", false)
+				# Stop step sound during dash end
+				if step_sound.playing:
+					step_sound.stop()
 			elif animation_player.current_animation != "dash_end":
 				if turning:
 					play_animation("turn")
+					# Stop step sound during turn and play slide sound
+					if step_sound.playing:
+						step_sound.stop()
+					# Play slide sound when turning
+					if not slide_sound.playing:
+						slide_sound.play()
 				else:
 					play_animation("walk")
+					# Start looping step sound when walking
+					if not step_sound.playing:
+						step_sound.play()
 	else:
+		# Stop step sound when in air
+		if step_sound.playing:
+			step_sound.stop()
 		if _velocity.y < 0:
 			if jumps_done > 1:
 				play_animation("double_jump")
@@ -272,13 +302,36 @@ func player_take_damage():
 		player_death()
 
 func player_death():
-	# Restart the current level
-	await get_tree().create_timer(1.5).timeout  # Wait 1 seconds before playing death sound
+	# Respawn the player at their starting position
+	await get_tree().create_timer(1.5).timeout  # Wait 1.5 seconds before playing death sound
 	death_sound.play()
-	await get_tree().create_timer(1.5).timeout  # Wait 1.5 seconds before restarting level
-	get_tree().reload_current_scene()
+	player_hud._stop_music()
+	await get_tree().create_timer(1.5).timeout  # Wait 1.5 seconds before respawning
+
+	# Reset player state
+	global_position = spawn_position
+	velocity = Vector2.ZERO
+	current_hp = 1
+	hurt_timer = 0
+	dashing = 0
+	impulse = Vector2.ZERO
+	impulse_reset = false
+	jumps_done = 0
+	
+	# Reset death fade effect
+	if color_rect:
+		color_rect.color.a = 0.0  # Make it fully transparent
+	
+	# Update HUD to reflect restored health
+	player_hud.update_segments(current_hp)
+	# Reset timer to starting time
+	player_hud.seconds = starting_time
+	player_hud.update_timer_display()
+	player_hud._play_music()
+	enemy_manager.reset_all_enemies()  # Reset all enemies to their original state
 
 # Adds HP to the player and calls the player_hud.gd to update the display
 func player_heal():
 	current_hp = clamp(current_hp + 1, 0, max_hp)
+	heal_sound.play()
 	player_hud.update_segments(current_hp)

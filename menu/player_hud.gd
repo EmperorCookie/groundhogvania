@@ -12,7 +12,8 @@ var pause_time_remaining: float = 0.0
 @onready var hp_segment_1: ColorRect = $Control/HPContainer/HP1
 @onready var hp_segment_2: ColorRect = $Control/HPContainer/HP2
 
-
+# Music
+@onready var level_music: AudioStreamPlayer = $LevelMusic
 
 func _ready():
 	# Initialize values from player
@@ -185,3 +186,17 @@ func _on_take_damage_btn_pressed() -> void:
 func _on_heal_btn_pressed() -> void:
 	var player = get_node("../Player")
 	player.player_heal()
+
+
+func _play_music() -> void:
+	# Start level music when the player is ready
+	if level_music and not level_music.playing:
+		level_music.volume_db = 0.0  # Reset volume to normal level
+		level_music.play()
+		
+func _stop_music() -> void:
+	if level_music and level_music.playing:
+		# Create a tween to fade out the music
+		var tween = create_tween()
+		tween.tween_property(level_music, "volume_db", -80.0, 1.5)  # Fade to silence over 1.5 seconds
+		tween.tween_callback(level_music.stop)  # Stop the music after fade completes

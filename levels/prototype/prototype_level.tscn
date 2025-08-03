@@ -1,16 +1,17 @@
-[gd_scene load_steps=12 format=4 uid="uid://byq04x76yogq2"]
+[gd_scene load_steps=13 format=4 uid="uid://byq04x76yogq2"]
 
 [ext_resource type="TileSet" uid="uid://duvwwdne6hncq" path="res://assets/blocking_tileset.tres" id="1_7xbuc"]
 [ext_resource type="PackedScene" uid="uid://doaui24fomcxa" path="res://camera/target_camera.tscn" id="3_nkijq"]
 [ext_resource type="PackedScene" uid="uid://5yuhe55teig6" path="res://player/player.tscn" id="3_yc6rk"]
 [ext_resource type="PackedScene" uid="uid://25jvu1t7w5ho" path="res://menu/player_hud.tscn" id="4_yc6rk"]
-[ext_resource type="PackedScene" uid="uid://d2i2j5p2nqktx" path="res://player/preview_controller.tscn" id="5_x6tsm"]
+[ext_resource type="PackedScene" path="res://player/preview_controller.tscn" id="5_x6tsm"]
 [ext_resource type="Script" uid="uid://bu8hcbjroii8c" path="res://player/preview_controller.gd" id="6_t82ty"]
 [ext_resource type="PackedScene" uid="uid://cmctud1jb30gq" path="res://items/item_heart.tscn" id="7_gl4gk"]
 [ext_resource type="PackedScene" uid="uid://e1l73ewb8ssq" path="res://items/item_add_time.tscn" id="8_jrhx3"]
 [ext_resource type="PackedScene" uid="uid://rhy5iqavhl6k" path="res://items/item_pause_time.tscn" id="9_2dl6f"]
 [ext_resource type="PackedScene" uid="uid://cvd1n27hndunl" path="res://powerups/power_up_double_jump.tscn" id="10_1fcek"]
 [ext_resource type="PackedScene" uid="uid://b0simqtpgrgef" path="res://enemies/bee/bee.tscn" id="11_o8nxb"]
+[ext_resource type="Script" uid="uid://4vhrxqm3uara" path="res://levels/prototype/enemy_manager.gd" id="11_y3vmf"]
 
 [node name="PrototypeLevel" type="Node2D"]
 
@@ -34,7 +35,6 @@ lead = 0.0
 position = Vector2(-468, 395)
 camera = NodePath("../PlayerCamera")
 jump_count = 1
-can_dash = false
 
 [node name="PlayerCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_nkijq")]
 target = NodePath("../Player")
@@ -54,6 +54,13 @@ pause_amount = 5.0
 [node name="PowerUpDoubleJump" parent="." instance=ExtResource("10_1fcek")]
 position = Vector2(563, 1015)
 
-[node name="Bee" parent="." node_paths=PackedStringArray("player") instance=ExtResource("11_o8nxb")]
+[node name="EnemyManager" type="Node2D" parent="."]
+script = ExtResource("11_y3vmf")
+
+[node name="Bee" parent="EnemyManager" node_paths=PackedStringArray("player") instance=ExtResource("11_o8nxb")]
 position = Vector2(-92, 340)
-player = NodePath("../Player")
+player = NodePath("../../Player")
+
+[node name="Bee2" parent="EnemyManager" node_paths=PackedStringArray("player") instance=ExtResource("11_o8nxb")]
+position = Vector2(1313, 35)
+player = NodePath("../../Player")
