@@ -1,8 +1,8 @@
 extends Node2D
 
 # Node control
-@export var enable_nodes: Array[Node]
-@export var disable_nodes: Array[Node]
+@export var level_nodes: Array[Node]
+@export var preview_nodes: Array[Node]
 
 # Stats
 @export var speed: float = 1000
@@ -39,16 +39,16 @@ func input_state(action: String) -> int:
 	)
 
 func start_preview():
-	for node in enable_nodes:
+	for node in level_nodes:
 		set_node_status(node, Node.PROCESS_MODE_DISABLED, false)
-	for node in disable_nodes:
+	for node in preview_nodes:
 		set_node_status(node, Node.PROCESS_MODE_INHERIT, true)
 	
 
 func start_level():
-	for node in disable_nodes:
+	for node in preview_nodes:
 		set_node_status(node, Node.PROCESS_MODE_DISABLED, false)
-	for node in enable_nodes:
+	for node in level_nodes:
 		set_node_status(node, Node.PROCESS_MODE_INHERIT, true)
 	player_hud._play_music()
 
