@@ -314,7 +314,7 @@ func player_reset():
 	# Reset player state
 	global_position = spawn_position
 	velocity = Vector2.ZERO
-	current_hp = 1
+	current_hp = clamp(current_hp, 1, max_hp)
 	hurt_timer = 0
 	dashing = 0
 	impulse = Vector2.ZERO
