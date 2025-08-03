@@ -43,7 +43,6 @@ func start_preview():
 		set_node_status(node, Node.PROCESS_MODE_DISABLED, false)
 	for node in preview_nodes:
 		set_node_status(node, Node.PROCESS_MODE_INHERIT, true)
-	
 
 func start_level():
 	for node in preview_nodes:
